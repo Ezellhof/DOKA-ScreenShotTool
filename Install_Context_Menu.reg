@@ -1,0 +1,13 @@
+Windows Registry Editor Version 5.00
+
+; OP ScreenMontage Context Menu - Single Button (User Registry Only)
+; Remove any existing entry
+[-HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenMontage]
+
+; Single context menu button
+[HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenMontage]
+@="OP ScreenMontage"
+"Icon"="C:\\Users\\ezellhof\\LOCAL_TESTING_FOLDER\\OP_ScreenAssembly\\Doka.ico"
+
+[HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenMontage\command]
+@="powershell.exe -ExecutionPolicy Bypass -Command \"& 'C:\\Users\\ezellhof\\LOCAL_TESTING_FOLDER\\OP_ScreenAssembly\\OP-ScreenAssembly.ps1' -a '%1'; Write-Host 'OP ScreenMontage completed. Press any key to close...'; Read-Host\""
