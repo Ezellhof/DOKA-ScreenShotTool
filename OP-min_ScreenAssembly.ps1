@@ -270,6 +270,18 @@ function Install-ToolAssets {
   $ScriptRoot = Split-Path -Parent $ScriptSrc
   $RegFiles = New-RegistryFiles -InstallPath $InstallDir -IconPath $IconDest -ScriptRoot $ScriptRoot
   
+  # Also copy registry files to script execution directory for easy access
+  if($RegFiles -and $RegFiles.InstallReg -and $RegFiles.UninstallReg) {
+    try {
+      $ScriptDirInstallReg = Join-Path $ScriptRoot "Install_Context_Menu.reg"
+      $ScriptDirUninstallReg = Join-Path $ScriptRoot "Uninstall_Context_Menu.reg"
+      Copy-Item -Path $RegFiles.InstallReg -Destination $ScriptDirInstallReg -Force
+      Copy-Item -Path $RegFiles.UninstallReg -Destination $ScriptDirUninstallReg -Force
+    } catch {
+      Write-Host "Warning: Could not copy registry files to script directory" -ForegroundColor Yellow
+    }
+  }
+  
   return @{ ScriptPath=$ScriptDest; IconPath=$IconDest; Shim=$CmdPath; ArtPath=$ArtDest; RegFiles=$RegFiles }
   } catch {
     Write-Host "Failed to install tool assets: $($_.Exception.Message)" -ForegroundColor Yellow
@@ -376,6 +388,24 @@ function Main {
         }
         if($assets.RegFiles -and $assets.RegFiles.InstallReg){
           Write-Host ("Registry files generated: Install_Context_Menu.reg & Uninstall_Context_Menu.reg") -ForegroundColor DarkGray
+        }
+        
+        # Prompt for context menu installation
+        if($assets.RegFiles -and $assets.RegFiles.InstallReg -and (Test-Path $assets.RegFiles.InstallReg)){
+          Write-Host ""
+          $contextMenuChoice = Read-Host "Install Windows Context Menu Integration? (Y/n)"
+          if($contextMenuChoice -eq "" -or $contextMenuChoice -match "^[Yy]") {
+            try {
+              Write-Host "Installing context menu integration..." -ForegroundColor Cyan
+              Start-Process -FilePath "regedit.exe" -ArgumentList "/s", "`"$($assets.RegFiles.InstallReg)`"" -Wait -Verb RunAs
+              Write-Host "Context menu integration installed successfully!" -ForegroundColor Green
+            } catch {
+              Write-Host "Failed to install context menu: $($_.Exception.Message)" -ForegroundColor Yellow
+              Write-Host "You can manually install it later by running: Install_Context_Menu.reg" -ForegroundColor Gray
+            }
+          } else {
+            Write-Host "Context menu installation skipped. You can install it later by running: Install_Context_Menu.reg" -ForegroundColor Gray
+          }
         }
       }
       $art = @()
