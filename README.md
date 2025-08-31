@@ -1,22 +1,26 @@
 # 🚧 OP-Tool: ScreenAssembly
 
+<div align="center">
+
+```PowerShell
++ ╔════════════════════════════════════════════════════════════════════════╗
++ ║                                                                        ║
++ ║ ...................................................................... ║
++ ║ ...................................................................... ║
++ ║ .....@@@@@@@@@@...............@@..............@@...................... ║
++ ║ ....@@..@@.....@.............@@@.............@@@...................... ║
++ ║ ....@@@@@@@@@..@......@@@@@@@@@@..@@@@@@@@@.@@@...@@@@..@@@@@@@@...... ║
++ ║ ....@@@@@@@@@@.@....@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@..@@@@@@@@@@@@.... ║
++ ║ ....@@.@@@@@@@@@...@@@......@@@@@@@.....@@@@@@@@@@...@@@......@@@..... ║
++ ║ ....@@@@@@@@@@@@...@@@@@@@@@@@@@@@@@@@@@@@@@@@.@@@@@.@@@@@@@@.@@@..... ║
++ ║ .....@@@@@@@@@@@....@@@@@@@@....@@@@@@@@...@@@...@@@@.@@@@@...@@...... ║
++ ║ ...................................................................... ║
++ ║ ...................................................................... ║
++ ║                                                                        ║
++ ╚════════════════════════════════════════════════════════════════════════╝
 ```
-╔════════════════════════════════════════════════════════════════════════╗
-║                                                                        ║
-║ ...................................................................... ║
-║ ...................................................................... ║
-║ .....@@@@@@@@@@...............@@..............@@...................... ║
-║ ....@@..@@.....@.............@@@.............@@@...................... ║
-║ ....@@@@@@@@@..@......@@@@@@@@@@..@@@@@@@@@.@@@...@@@@..@@@@@@@@...... ║
-║ ....@@@@@@@@@@.@....@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@..@@@@@@@@@@@@.... ║
-║ ....@@.@@@@@@@@@...@@@......@@@@@@@.....@@@@@@@@@@...@@@......@@@..... ║
-║ ....@@@@@@@@@@@@...@@@@@@@@@@@@@@@@@@@@@@@@@@@.@@@@@.@@@@@@@@.@@@..... ║
-║ .....@@@@@@@@@@@....@@@@@@@@....@@@@@@@@...@@@...@@@@.@@@@@...@@...... ║
-║ ...................................................................... ║
-║ ...................................................................... ║
-║                                                                        ║
-╚════════════════════════════════════════════════════════════════════════╝
-```
+
+</div>
 
 ## ✨ Features
 
@@ -34,6 +38,16 @@
 - �️ **Portable & Self-Contained** - No system-wide installs, everything in user space
 - 🔧 **Smart Asset Management** - Auto-downloads latest ImageMagick with version detection
 - 📋 **Dynamic Registry Files** - Generates personalized Windows context menu files during setup
+
+<div align="center">
+
+![Platform](https://img.shields.io/badge/Platform-Windows-success?style=for-the-badge&logo=windows)
+![License](https://img.shields.io/badge/License-Free-brightgreen?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Production%20Ready-gold?style=for-the-badge)
+[![PowerShell](https://img.shields.io/badge/Powered%20by-PowerShell-blue?style=for-the-badge&logo=powershell)](https://docs.microsoft.com/en-us/powershell/)
+[![ImageMagick](https://img.shields.io/badge/Powered%20by-ImageMagick-orange?style=for-the-badge)](https://imagemagick.org/)
+[![Made with ❤️](https://img.shields.io/badge/Made%20with-❤️-red?style=for-the-badge)](https://github.com/Ezellhof)
+</div>
 
 ## 🎯 Auto Mode Intelligence
 
@@ -61,12 +75,11 @@
 # ✅ Ask if you want Windows context menu integration (Y/n)
 ```
 
-## 💎 With Windows Context Menu Integration:
+## 💎 Usage with Windows Context Menu Integration:
 
 - Select as many Folders as you want => Rightclick => Click **OP-ScreenAssembly (Auto)** **[See Video](#windows-context-menu-integration)**
-- Or use the generated `Install_Context_Menu.reg` file for manual installation
 
-## 🛸 Without Context Menu Integration:
+## 🛸 Useage without Context Menu Integration:
 ```powershell
 # After setup, use from anywhere:
 scmontage -a .\screenshot-folder\
@@ -138,7 +151,7 @@ After running `-setup`, the following files are created:
 **🆕 Automated Installation:**
 - Run `.\OP-min_ScreenAssembly.ps1 -setup`
 - When prompted "Install Windows Context Menu Integration? (Y/n)", press Enter or type Y
-- UAC prompt will appear - click Yes to install
+- UAC prompt will appear - Enter Password for your User
 
 **📋 Manual Installation:**
 - Use the generated `Install_Context_Menu.reg` file (created during setup)
@@ -172,38 +185,21 @@ After running `-setup`, the following files are created:
 - **✅ COMPLETED TODAY**: Global `scmontage` command with PATH integration
 
 **🔮 Future Plans:**
-- (WIP LONG TERM) Make a [DISCOSII]() **Wizard/Masks/Buttons/Dialog-Screenshot-Database** (Maybe Automation or Intern)
-    - Make ScreenAssembly with OCR and PixelCompare and maybe even AI compare screenshots to DB and Label them
-    - Idea: Is there not some ugly new windows feature which screenshots your desktop 24/7 => Instant DB
-- (WIP) Play around with ImageMagick-OCR if its good enough use it even without compare-DB
-- Add functionality to eat any File Format (.jpg, .jpeg, .bmp, .more)
-- Add Output Argument/ContextMenuDialog like (LowSize, BigBoySize, .FileFormats, .Filename)
-- Add Custom ColorPicker (No clue if that is even possible in a Terminal) also useless Feature tbh.
-- Make a "/usr/bin/bash" Version that is not full of weird AI-Generated-Code **(And MacOS people)**
+- Make a [DISCOSII]() **Wizard/Masks/Buttons** Database (Mindmap)
 
 -----
 
 **🎨 Made with ❤️ by ezellhof**
 
+**🎯 Ready to revolutionize your screenshot workflows? Get started with one command!**
+
+```powershell
+.\OP-min_ScreenAssembly.ps1 -setup
 ```
-╔════════════════════════════════════════════════════════════════════════╗
-║   Tool successfully optimized with full functionality                  ║
-║   Made for Doka by ezellhof                                            ║ 
-║   https://github.com/Ezellhof/DOKA-ScreenShotTool                      ║
-╠════════════════════════════════════════════════════════════════════════╣
-║ ...................................................................... ║
-║ ...................................................................... ║
-║ .....@@@@@@@@@@...............@@..............@@...................... ║
-║ ....@@..@@.....@.............@@@.............@@@...................... ║
-║ ....@@@@@@@@@..@......@@@@@@@@@@..@@@@@@@@@.@@@...@@@@..@@@@@@@@...... ║
-║ ....@@@@@@@@@@.@....@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@..@@@@@@@@@@@@.... ║
-║ ....@@.@@@@@@@@@...@@@......@@@@@@@.....@@@@@@@@@@...@@@......@@@..... ║
-║ ....@@@@@@@@@@@@...@@@@@@@@@@@@@@@@@@@@@@@@@@@.@@@@@.@@@@@@@@.@@@..... ║
-║ .....@@@@@@@@@@@....@@@@@@@@....@@@@@@@@...@@@...@@@@.@@@@@...@@...... ║
-║ ...................................................................... ║
-║ ...................................................................... ║
-╚════════════════════════════════════════════════════════════════════════╝
-```
+
+
+
+</div>
 
 - *Coding is done 90% by AI so don't tell me any bugs post them in your own ChatGPT and mail me the fixes!*
 - *Inspired by the holy Helpdesk 🖥️*
