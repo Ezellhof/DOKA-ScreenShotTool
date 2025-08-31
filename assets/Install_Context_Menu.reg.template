@@ -1,0 +1,27 @@
+Windows Registry Editor Version 5.00
+
+; OP ScreenMontage Context Menu (User scope)
+; Generated automatically during setup
+; Cleans previous entries (old names and locations)
+[-HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly]
+[-HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly]
+[-HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenMontage]
+[-HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenMontage]
+[-HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly-Advanced]
+
+; Folder object context menu (Auto)
+[HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly]
+"MUIVerb"="OP ScreenAssembly (Auto)"
+"Icon"="{{ICON_PATH}}"
+"SeparatorBefore"=""
+
+[HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly\command]
+@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -a \"%1\""
+
+; Background (right-click empty area in a folder)
+[HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly]
+"MUIVerb"="OP ScreenAssembly (Auto)"
+"Icon"="{{ICON_PATH}}"
+
+[HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly\command]
+@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -a \"%V\""

@@ -1,6 +1,7 @@
 Windows Registry Editor Version 5.00
 
 ; OP-ScreenAssembly Context Menu Removal
+; Generated automatically during setup
 ; Removes all OP-ScreenAssembly entries from Windows context menu
 ; 
 ; INSTRUCTIONS:
@@ -11,8 +12,12 @@ Windows Registry Editor Version 5.00
 ; Remove folder context menu entry
 [-HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly]
 
-; Remove background context menu entry  
+; Remove background context menu entry
 [-HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly]
 
 ; Remove advanced submenu (if it was enabled)
 [-HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly-Advanced]
+
+; Remove legacy names/paths
+[-HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenMontage]
+[-HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenMontage]
