@@ -1,13 +1,12 @@
 ﻿param(
   [Parameter(Position=0)][string]$Folder,
   [switch]$setup,
-  [switch]$reinstall,
   [switch]$a,
   [switch]$t,
   [switch]$p,
   [switch]$w,
-  [switch]$d,
-  [switch]$l
+  [switch]$s,
+  [switch]$c
 )
 
 # OP-ScreenAssembly v1.0 - Doka Screenshot Montage Tool
@@ -389,7 +388,6 @@ function Main {
         if($assets.RegFiles -and $assets.RegFiles.InstallReg){
           Write-Host ("Registry files generated: Install_Context_Menu.reg & Uninstall_Context_Menu.reg") -ForegroundColor DarkGray
         }
-        
         # Prompt for context menu installation
         if($assets.RegFiles -and $assets.RegFiles.InstallReg -and (Test-Path $assets.RegFiles.InstallReg)){
           Write-Host ""
@@ -426,35 +424,8 @@ function Main {
     }
   }
 
-  # Reinstall-only mode: refresh installed script/shim/env without IM update
-  if($reinstall){
-    $assets = Install-ToolAssets
-    if($assets){
-      Write-Host "Tool assets refreshed successfully." -ForegroundColor Green
-      if($assets.Shim -and (Test-Path $assets.Shim)){
-        Write-Host ("Run: scmontage -a <folder>") -ForegroundColor DarkGray
-      }
-      if($env:SCMONTAGE){ Write-Host ("User env var SCMONTAGE -> $env:SCMONTAGE") -ForegroundColor DarkGray }
-      $art = @()
-      if($assets.ArtPath -and (Test-Path $assets.ArtPath)){
-        $art = Get-Content -Path $assets.ArtPath -Encoding UTF8 | ForEach-Object { $_.Replace('-', ' ') }
-      }
-      $lines = @(
-        '  Tool successfully installed',
-        '  Made for Doka by ezellhof',
-        '  https://github.com/Ezellhof/DOKA-ScreenShotTool'
-      ) + $art
-      Show-Footer -success $true -Lines $lines -ContentForeground DarkBlue -ContentBackground Yellow -DrawSeparator $true
-      return
-    } else {
-      Write-Host "Reinstall failed." -ForegroundColor Red
-      Show-Footer -success $false -Lines @('  Reinstall failed')
-      exit 1
-    }
-  }
-
   # Default to automatic mode if no flags provided (like full script)
-  if(-not ($p -or $w -or $d -or $l -or $t -or $a)){ Write-Host "No mode specified - defaulting to automatic (-a)" -ForegroundColor Yellow; $a=$true }
+  if(-not ($p -or $w -or $t -or $a -or $s -or $c)){ Write-Host "No mode specified - defaulting to automatic (-a)" -ForegroundColor Yellow; $a=$true }
 
   $magick = Initialize-ImageMagick
   if(-not $magick){ Write-Host "ImageMagick setup failed." -ForegroundColor Red; Show-Footer $false; exit 1 }
@@ -466,27 +437,37 @@ function Main {
   if(-not $images -or $images.Count -eq 0){ Write-Host "No PNGs found in: $Folder" -ForegroundColor Red; Show-Footer $false; exit 1 }
   Write-Host ("Found {0} PNG files" -f $images.Count) -ForegroundColor Green
 
-  if($a){
+  # Always use automatic brightness for light/dark mode
+  if($a -or $p -or $w){
     $s = Get-AutomaticSettings $images $magick
-    $ok = New-Montage -isPortrait $s.UsePortrait -isDark $s.UseDark -inputFolder $Folder -magick $magick -modeDescription "Auto"
-    Show-Footer $ok; if(-not $ok){ exit 1 }; return
-  }
-
-  if(-not $t){
-    if(-not ($p -xor $w)){ Write-Host "Choose either -p (portrait) or -w (landscape); falling back to -a" -ForegroundColor Yellow; $a=$true; return (Main) }
-    if(-not ($d -xor $l)){ Write-Host "Choose either -d (dark) or -l (light); falling back to -a" -ForegroundColor Yellow; $a=$true; return (Main) }
+    $isDark = $s.UseDark
+    if($a){
+      $ok = New-Montage -isPortrait $s.UsePortrait -isDark $isDark -inputFolder $Folder -magick $magick -modeDescription "Auto"
+      Show-Footer $ok; if(-not $ok){ exit 1 }; return
+    }
+    if($p){
+      $ok = New-Montage -isPortrait $true -isDark $isDark -inputFolder $Folder -magick $magick -modeDescription "Portrait"
+      Show-Footer $ok; if(-not $ok){ exit 1 }; return
+    }
+    if($w){
+      $ok = New-Montage -isPortrait $false -isDark $isDark -inputFolder $Folder -magick $magick -modeDescription "Wide"
+      Show-Footer $ok; if(-not $ok){ exit 1 }; return
+    }
   }
 
   if($t){
-    Write-Host "TEST MODE: creating all 4 combinations..." -ForegroundColor Magenta
-  $ok=0
-  foreach($pr in $true,$false){ foreach($dk in $true,$false){ if(New-Montage $pr $dk $Folder $magick "Test"){ $ok++ } }}
-    Write-Host ("Test completed: {0}/4 successful" -f $ok) -ForegroundColor ($(if($ok -eq 4){'Green'}else{'Yellow'}))
-    Show-Footer ($ok -eq 4); return
+    Write-Host "TEST MODE: creating all 2 combinations..." -ForegroundColor Magenta
+    $ok=0
+    foreach($pr in $true,$false){
+      $s = Get-AutomaticSettings $images $magick
+      $isDark = $s.UseDark
+      if(New-Montage $pr $isDark $Folder $magick "Test"){ $ok++ }
+    }
+    Write-Host ("Test completed: {0}/2 successful" -f $ok) -ForegroundColor ($(if($ok -eq 2){'Green'}else{'Yellow'}))
+    Show-Footer ($ok -eq 2); return
   }
 
-  $ok2 = New-Montage -isPortrait $p -isDark $d -inputFolder $Folder -magick $magick -modeDescription "Manual"
-  Show-Footer $ok2; if(-not $ok2){ exit 1 }
+  # ...existing code...
 }
 
 try { Main } catch { Write-Host $_.Exception.Message -ForegroundColor Red; Show-Footer $false; exit 1 }

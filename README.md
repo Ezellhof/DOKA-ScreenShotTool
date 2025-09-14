@@ -35,7 +35,7 @@
 - 📐 **Optimal Layouts** - Auto Portrait/Widescreen based on quantity & dimensions
 - ⚡ **Perfect Grids** - Calculates best column/row arrangements
 - 🎯 **Clean Output** - High-Quality Screenshot-Montages with colored Borders and high Resolution **[See Video](#clean-output--zoom)**
-- �️ **Portable & Self-Contained** - No system-wide installs, everything in user space
+- 🎯 **Portable & Self-Contained** - No system-wide installs, everything in user space
 - 🔧 **Smart Asset Management** - Auto-downloads latest ImageMagick with version detection
 - 📋 **Dynamic Registry Files** - Generates personalized Windows context menu files during setup
 
@@ -43,7 +43,6 @@
 
 ![Platform](https://img.shields.io/badge/Platform-Windows-success?style=for-the-badge&logo=windows)
 ![License](https://img.shields.io/badge/License-Free-brightgreen?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Production%20Ready-gold?style=for-the-badge)
 [![PowerShell](https://img.shields.io/badge/Powered%20by-PowerShell-blue?style=for-the-badge&logo=powershell)](https://docs.microsoft.com/en-us/powershell/)
 [![ImageMagick](https://img.shields.io/badge/Powered%20by-ImageMagick-orange?style=for-the-badge)](https://imagemagick.org/)
 [![Made with ❤️](https://img.shields.io/badge/Made%20with-❤️-red?style=for-the-badge)](https://github.com/Ezellhof)

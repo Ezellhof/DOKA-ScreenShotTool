@@ -29,67 +29,67 @@ Windows Registry Editor Version 5.00
 ; Top-level entry when right-clicking a folder
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly]
 "MUIVerb"="OP ScreenAssembly"
-"Icon"="{{ICON_PATH}}"
+"Icon"="C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\Doka.ico"
 "subcommands"=""
 
 ; Wide montage option (landscape grid)
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly\shell\Wide]
 @="Wide Montage"
-"Icon"="{{ICON_PATH}}"
+"Icon"="C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\Doka.ico"
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly\shell\Wide\command]
-@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -w \"%V\""
+@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\OP-ScreenAssembly.ps1\" -w \"%V\""
 
 ; Portrait montage option (portrait grid)
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly\shell\Portrait]
 @="Portrait Montage"
-"Icon"="{{ICON_PATH}}"
+"Icon"="C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\Doka.ico"
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly\shell\Portrait\command]
-@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -p \"%V\""
+@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\OP-ScreenAssembly.ps1\" -p \"%V\""
 
 ; Stack horizontally option
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly\shell\Stack]
 @="Stack Horizontally"
-"Icon"="{{ICON_PATH}}"
+"Icon"="C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\Doka.ico"
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly\shell\Stack\command]
-@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -s \"%V\""
+@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\OP-ScreenAssembly.ps1\" -s \"%V\""
 
 ; Carousel vertically option
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly\shell\Carousel]
 @="Carousel Vertically"
-"Icon"="{{ICON_PATH}}"
+"Icon"="C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\Doka.ico"
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly\shell\Carousel\command]
-@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -c \"%V\""
+@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\OP-ScreenAssembly.ps1\" -c \"%V\""
 
 ; Top-level entry when right-clicking the blank area inside a folder (background)
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly]
 "MUIVerb"="OP ScreenAssembly"
-"Icon"="{{ICON_PATH}}"
+"Icon"="C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\Doka.ico"
 "subcommands"=""
 
 ; Wide montage in background
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly\shell\Wide]
 @="Wide Montage"
-"Icon"="{{ICON_PATH}}"
+"Icon"="C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\Doka.ico"
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly\shell\Wide\command]
-@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -w \"%V\""
+@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\OP-ScreenAssembly.ps1\" -w \"%V\""
 
 ; Portrait montage in background
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly\shell\Portrait]
 @="Portrait Montage"
-"Icon"="{{ICON_PATH}}"
+"Icon"="C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\Doka.ico"
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly\shell\Portrait\command]
-@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -p \"%V\""
+@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\OP-ScreenAssembly.ps1\" -p \"%V\""
 
 ; Stack horizontally in background
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly\shell\Stack]
 @="Stack Horizontally"
-"Icon"="{{ICON_PATH}}"
+"Icon"="C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\Doka.ico"
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly\shell\Stack\command]
-@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -s \"%V\""
+@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\OP-ScreenAssembly.ps1\" -s \"%V\""
 
 ; Carousel vertically in background
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly\shell\Carousel]
 @="Carousel Vertically"
-"Icon"="{{ICON_PATH}}"
+"Icon"="C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\Doka.ico"
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly\shell\Carousel\command]
-@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -c \"%V\""
+@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\OP-ScreenAssembly.ps1\" -c \"%V\""
