@@ -437,12 +437,13 @@ function Main {
   if(-not $images -or $images.Count -eq 0){ Write-Host "No PNGs found in: $Folder" -ForegroundColor Red; Show-Footer $false; exit 1 }
   Write-Host ("Found {0} PNG files" -f $images.Count) -ForegroundColor Green
 
-  # Always use automatic brightness for light/dark mode
+  # Always use automatic brightness for light/dark mode.  Use a separate
+  # variable for the automatic settings to avoid shadowing the -s switch.
   if($a -or $p -or $w){
-    $s = Get-AutomaticSettings $images $magick
-    $isDark = $s.UseDark
+    $auto = Get-AutomaticSettings $images $magick
+    $isDark = $auto.UseDark
     if($a){
-      $ok = New-Montage -isPortrait $s.UsePortrait -isDark $isDark -inputFolder $Folder -magick $magick -modeDescription "Auto"
+      $ok = New-Montage -isPortrait $auto.UsePortrait -isDark $isDark -inputFolder $Folder -magick $magick -modeDescription "Auto"
       Show-Footer $ok; if(-not $ok){ exit 1 }; return
     }
     if($p){
@@ -455,19 +456,129 @@ function Main {
     }
   }
 
-  if($t){
-    Write-Host "TEST MODE: creating all 2 combinations..." -ForegroundColor Magenta
-    $ok=0
-    foreach($pr in $true,$false){
-      $s = Get-AutomaticSettings $images $magick
-      $isDark = $s.UseDark
-      if(New-Montage $pr $isDark $Folder $magick "Test"){ $ok++ }
+  function New-StackMontage($images, $magick, $Folder, $isDark, $outFileOverride=$null) {
+    $imageCount = $images.Count
+    $folderInfo = Get-Item $Folder
+    $folderName = $folderInfo.Name
+    $modeText = if($isDark){ "Dark" } else { "Light" }
+    
+    $maxHeight = 0
+    foreach($img in $images){
+      try {
+        $info = & $magick identify -format "%h" -- "$($img.FullName)" 2>$null
+        $h = [int]$info
+        if($h -gt $maxHeight){ $maxHeight = $h }
+      } catch {}
     }
-    Write-Host ("Test completed: {0}/2 successful" -f $ok) -ForegroundColor ($(if($ok -eq 2){'Green'}else{'Yellow'}))
-    Show-Footer ($ok -eq 2); return
-  }
+    if($maxHeight -le 0){ $maxHeight = 100 }
+    $geometry = "x${maxHeight}+12+12"
+    $tile = "1x${imageCount}"
+    $outputFolder = $folderInfo.Parent.FullName
+    $outFile = if($outFileOverride){ $outFileOverride } else { "Stack_${modeText}_${folderName}.png" }
+    $outPath = Join-Path $outputFolder $outFile
+    $bg  = if($isDark){ "#1e1e1e" } else { "#e6e6e6" }
+    $bor = if($isDark){ "#fc59a3" } else { "#8e3ccb" }
+    $imArgs = @('montage')
+    foreach($f in $images){ $imArgs += $f.FullName }
+    $imArgs += @('-tile', $tile, '-geometry', $geometry, '-background', $bg, '-bordercolor', $bor, '-border', '6', '-shadow', '-quality', '95', '-density', '150', $outPath)
+    & $magick @imArgs
+    
+    # Return both success status and filename
+    return @{ Success = ($LASTEXITCODE -eq 0); FileName = $outFile }
+}
 
-  # ...existing code...
+function New-CarouselMontage($images, $magick, $Folder, $isDark, $outFileOverride=$null) {
+    $imageCount = $images.Count
+    $folderInfo = Get-Item $Folder
+    $folderName = $folderInfo.Name
+    $modeText = if($isDark){ "Dark" } else { "Light" }
+    
+    $maxWidth = 0
+    foreach($img in $images){
+      try {
+        $info = & $magick identify -format "%w" -- "$($img.FullName)" 2>$null
+        $w = [int]$info
+        if($w -gt $maxWidth){ $maxWidth = $w }
+      } catch {}
+    }
+    if($maxWidth -le 0){ $maxWidth = 100 }
+    $geometry = "${maxWidth}x+12+12"
+    $tile = "${imageCount}x1"
+    $outputFolder = $folderInfo.Parent.FullName
+    $outFile = if($outFileOverride){ $outFileOverride } else { "Carousel_${modeText}_${folderName}.png" }
+    $outPath = Join-Path $outputFolder $outFile
+    $bg  = if($isDark){ "#1e1e1e" } else { "#e6e6e6" }
+    $bor = if($isDark){ "#fc59a3" } else { "#8e3ccb" }
+    $imArgs = @('montage')
+    foreach($f in $images){ $imArgs += $f.FullName }
+    $imArgs += @('-tile', $tile, '-geometry', $geometry, '-background', $bg, '-bordercolor', $bor, '-border', '6', '-shadow', '-quality', '95', '-density', '150', $outPath)
+    & $magick @imArgs
+    
+    # Return both success status and filename
+    return @{ Success = ($LASTEXITCODE -eq 0); FileName = $outFile }
+}
+
+  if($t){
+    Write-Host "TEST MODE: creating all 8 combinations (portrait/landscape × dark/light + stack/carousel dark/light)..." -ForegroundColor Magenta
+    $ok = 0
+    $folderInfo = Get-Item $Folder
+    $folderName = $folderInfo.Name
+    # First run the 4 standard montages (portrait vs landscape and dark vs light)
+    foreach($pr in $true,$false){
+      foreach($dark in $true,$false){
+        if(New-Montage $pr $dark $Folder $magick "Test"){ $ok++ }
+      }
+    }
+    # Stack (vertical, super high) for dark and light backgrounds
+    foreach($dark in $true,$false){
+      $modeText = if($dark){'Dark'}else{'Light'}
+      $outFile = "Stack_${modeText}_${folderName}.png"
+      Write-Host ("Creating Stack (vertical, ${modeText} mode)...") -ForegroundColor Cyan
+      $okStack = New-StackMontage $images $magick $Folder $dark $outFile
+      if($okStack){ Write-Host "SUCCESS: $outFile" -ForegroundColor Green; $ok++ } else { Write-Host "FAILED: $outFile" -ForegroundColor Red }
+    }
+    # Carousel (horizontal, super wide) for dark and light backgrounds
+    foreach($dark in $true,$false){
+      $modeText = if($dark){'Dark'}else{'Light'}
+      $outFile = "Carousel_${modeText}_${folderName}.png"
+      Write-Host ("Creating Carousel (horizontal, ${modeText} mode)...") -ForegroundColor Cyan
+      $okCar = New-CarouselMontage $images $magick $Folder $dark $outFile
+      if($okCar){ Write-Host "SUCCESS: $outFile" -ForegroundColor Green; $ok++ } else { Write-Host "FAILED: $outFile" -ForegroundColor Red }
+    }
+    Write-Host ("Test completed: {0}/8 successful" -f $ok) -ForegroundColor ($(if($ok -eq 8){'Green'}else{'Yellow'}))
+    Show-Footer ($ok -eq 8); return
+}
+
+  # When the -s switch is supplied, assemble all PNGs in a single vertical column (Stack)
+ if($s){
+    $auto = Get-AutomaticSettings $images $magick
+    $isDark = $auto.UseDark
+    $modeText = if($isDark){'Dark'}else{'Light'}
+    
+    Write-Host ("Creating Stack (vertical, ${modeText} mode)...") -ForegroundColor Cyan
+    $result = New-StackMontage $images $magick $Folder $isDark
+    if($result.Success){ 
+        Write-Host "SUCCESS: $($result.FileName)" -ForegroundColor Green 
+    } else { 
+        Write-Host "FAILED: $($result.FileName)" -ForegroundColor Red 
+    }
+    Show-Footer $result.Success; if(-not $result.Success){ exit 1 }; return
+}
+
+if($c){
+    $auto = Get-AutomaticSettings $images $magick
+    $isDark = $auto.UseDark
+    $modeText = if($isDark){'Dark'}else{'Light'}
+    
+    Write-Host ("Creating Carousel (horizontal, ${modeText} mode)...") -ForegroundColor Cyan
+    $result = New-CarouselMontage $images $magick $Folder $isDark
+    if($result.Success){ 
+        Write-Host "SUCCESS: $($result.FileName)" -ForegroundColor Green 
+    } else { 
+        Write-Host "FAILED: $($result.FileName)" -ForegroundColor Red 
+    }
+    Show-Footer $result.Success; if(-not $result.Success){ exit 1 }; return
+}
 }
 
 try { Main } catch { Write-Host $_.Exception.Message -ForegroundColor Red; Show-Footer $false; exit 1 }

@@ -48,14 +48,14 @@ Windows Registry Editor Version 5.00
 
 ; Stack horizontally option
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly\shell\Stack]
-@="Stack Horizontally"
+@="Stack (Horizontal)"
 "Icon"="C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\Doka.ico"
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly\shell\Stack\command]
 @="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\OP-ScreenAssembly.ps1\" -s \"%V\""
 
 ; Carousel vertically option
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly\shell\Carousel]
-@="Carousel Vertically"
+@="Carousel (Vertical)"
 "Icon"="C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\Doka.ico"
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly\shell\Carousel\command]
 @="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\OP-ScreenAssembly.ps1\" -c \"%V\""
@@ -82,14 +82,14 @@ Windows Registry Editor Version 5.00
 
 ; Stack horizontally in background
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly\shell\Stack]
-@="Stack Horizontally"
+@="Stack (Horizontal)"
 "Icon"="C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\Doka.ico"
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly\shell\Stack\command]
 @="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\OP-ScreenAssembly.ps1\" -s \"%V\""
 
 ; Carousel vertically in background
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly\shell\Carousel]
-@="Carousel Vertically"
+@="Carousel (Vertical)"
 "Icon"="C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\Doka.ico"
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly\shell\Carousel\command]
 @="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\ezellhof\\AppData\\Local\\OP-ScreenAssembly\\OP-ScreenAssembly.ps1\" -c \"%V\""
