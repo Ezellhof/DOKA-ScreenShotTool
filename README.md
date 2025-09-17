@@ -85,9 +85,6 @@ scmontage -a .\screenshot-folder\
 
 # Or direct script execution:
 .\OP-min_ScreenAssembly.ps1 -a .\screenshot-folder\
-
-# Reinstall/refresh tool assets:
-.\OP-min_ScreenAssembly.ps1 -reinstall
 ```
 
 ### 📋 Flags / Command Options
@@ -95,11 +92,12 @@ scmontage -a .\screenshot-folder\
 | Option | Description | Example |
 |--------|-------------|---------|
 | `-setup` | ⚙️ **Complete Setup** - Install ImageMagick, create registry files, optional context menu | `-setup` |
-| `-reinstall` | 🔄 **Refresh Assets** - Update script, shim, and environment without ImageMagick | `-reinstall` |
 | `-a` | 🤖 **Auto Mode** - Smart detection **(Recommended)** | `-a .\screenshot-folder\` |
-| `-t` | 🧪 **Test Mode** - Creates all 4 combinations | `-t .\screenshot-folder\` |
+| `-t` | 🧪 **Test Mode** - Creates all 8 combinations (Portrait/Widescreen/Stack/Carousel x Dark/Light) | `-t .\screenshot-folder\` |
 | `-p` | 📱 **Portrait** - Vertical layout | `-p -d .\screenshot-folder\` |
 | `-w` | 🖥️ **Widescreen** - Horizontal layout | `-w -l .\screenshot-folder\` |
+| `-s` | 🏢 **Stack Mode** - Stacks all PNGs vertically in a single column | `-s .\screenshot-folder\` |
+| `-c` | 🖼️ **Carousel Mode** - Arranges all PNGs horizontally in a single row | `-c .\screenshot-folder\` |
 | `-d` | 🌙 **Dark Theme** - Dark background & pink borders | `-p -d .\screenshot-folder\` |
 | `-l` | ☀️ **Light Theme** - Light background & purple borders | `-w -l .\screenshot-folder\` |
 
@@ -177,14 +175,7 @@ After running `-setup`, the following files are created:
 
 # 🧭 Roadmap
 
-- **✅ COMPLETED TODAY**: Complete setup automation with context menu integration
-- **✅ COMPLETED TODAY**: Beautiful ASCII art branding with colored borders
-- **✅ COMPLETED TODAY**: Template-based registry file generation
-- **✅ COMPLETED TODAY**: LocalAppData portable installation
-- **✅ COMPLETED TODAY**: Global `scmontage` command with PATH integration
-
-**🔮 Future Plans:**
-- Make a [DISCOSII]() **Wizard/Masks/Buttons** Database (Mindmap)
+- Make **MAYBE** a [DISCOSII]() **Wizard/Masks/Buttons** Database (Mindmap)
 
 -----
 
