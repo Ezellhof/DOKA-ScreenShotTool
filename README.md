@@ -198,4 +198,4 @@ After running `-setup`, the following files are created:
 
 Credits:
 
-[![Name](https://img.shields.io/badge/Name-Aigner%20Johannes-blue)](https://teams.microsoft.com/l/chat/19:0601fe92-dd52-4d8f-9194-6c302359bd36_b2b0f7d4-7c2e-4bba-a0f9-0721a1ec4acc@unq.gbl.spaces/conversations?context=%7B%22contextType%22%3A%22chat%22%7D)
+[![Name](https://img.shields.io/badge/Name-M%20Peter-blue)](https://teams.microsoft.com/l/chat/19:0601fe92-dd52-4d8f-9194-6c302359bd36_b2b0f7d4-7c2e-4bba-a0f9-0721a1ec4acc@unq.gbl.spaces/conversations?context=%7B%22contextType%22%3A%22chat%22%7D)
