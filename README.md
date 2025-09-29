@@ -22,6 +22,14 @@
 
 </div>
 
+<div align="center">
+
+![Platform](https://img.shields.io/badge/Platform-Windows-success?style=for-the-badge&logo=windows)
+![License](https://img.shields.io/badge/License-Free-brightgreen?style=for-the-badge)
+[![PowerShell](https://img.shields.io/badge/Powered%20by-PowerShell-blue?style=for-the-badge&logo=powershell)](https://docs.microsoft.com/en-us/powershell/)
+[![ImageMagick](https://img.shields.io/badge/Powered%20by-ImageMagick-orange?style=for-the-badge)](https://imagemagick.org/)
+</div>
+
 ## ✨ Features
 
 - 🎉 **No Windows Admin User needed** - Just execute as plain old **USER**
@@ -38,14 +46,6 @@
 - 🎯 **Portable & Self-Contained** - No system-wide installs, everything in user space
 - 🔧 **Smart Asset Management** - Auto-downloads latest ImageMagick with version detection
 - 📋 **Dynamic Registry Files** - Generates personalized Windows context menu files during setup
-
-<div align="center">
-
-![Platform](https://img.shields.io/badge/Platform-Windows-success?style=for-the-badge&logo=windows)
-![License](https://img.shields.io/badge/License-Free-brightgreen?style=for-the-badge)
-[![PowerShell](https://img.shields.io/badge/Powered%20by-PowerShell-blue?style=for-the-badge&logo=powershell)](https://docs.microsoft.com/en-us/powershell/)
-[![ImageMagick](https://img.shields.io/badge/Powered%20by-ImageMagick-orange?style=for-the-badge)](https://imagemagick.org/)
-</div>
 
 ## 🎯 Auto Mode Intelligence
 
