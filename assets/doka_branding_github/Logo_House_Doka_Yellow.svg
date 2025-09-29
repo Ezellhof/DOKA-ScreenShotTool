@@ -1,0 +1,19 @@
+<svg viewBox="0 0 42.1 42.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" data-name="Ebene 1">
+ <defs>
+  <style>.cls-1 {
+        fill: #fd0;
+      }
+
+      .cls-1, .cls-2 {
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        fill: #FFDD00;
+      }</style>
+ </defs>
+ <g class="layer">
+  <title>Layer 1</title>
+  <path class="cls-2" d="m35.74,17.5l0,4.19l-18.15,-8.52l-11.29,6.58l0,-5.64l11.29,-8.85l18.15,12.24zm6.31,14.53l-24.46,-4.69l-11.29,2.69l0,5.72l35.74,0l0,-3.72l0.01,0zm0,-5.79l-24.46,-10.03l-11.29,5.76l0,6.25l11.29,-3.72l24.46,6.16l0,-4.42zm-42.05,-26.23l0,0s0,42.06 0,42.06l0,0s42.05,0 42.05,0l0,-2.1l-39.94,0l0,-37.87l37.84,0l0,19.61l2.1,0l0,-21.71l-42.05,0l0,0.01z" id="svg_4"/>
+ </g>
+</svg>
