@@ -75,7 +75,9 @@
 
 ## 💎 Usage with Windows Context Menu Integration:
 
-- Select as many Folders as you want => Rightclick => Click **Doka-ScreenShotTool (Auto)** **[See Video](#windows-context-menu-integration)**
+- **Select as many Folders as you want**
+- **Rightclick**
+- Click **Doka-ScreenShotTool (Auto)** **[See Video](#windows-context-menu-integration)**
 
 ## 🛸 Useage without Context Menu Integration:
 ```powershell
