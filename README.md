@@ -45,7 +45,6 @@
 ![License](https://img.shields.io/badge/License-Free-brightgreen?style=for-the-badge)
 [![PowerShell](https://img.shields.io/badge/Powered%20by-PowerShell-blue?style=for-the-badge&logo=powershell)](https://docs.microsoft.com/en-us/powershell/)
 [![ImageMagick](https://img.shields.io/badge/Powered%20by-ImageMagick-orange?style=for-the-badge)](https://imagemagick.org/)
-[![Made with ❤️](https://img.shields.io/badge/Made%20with-❤️-red?style=for-the-badge)](https://github.com/Ezellhof)
 </div>
 
 ## 🎯 Auto Mode Intelligence
@@ -179,15 +178,7 @@ After running `-setup`, the following files are created:
 
 -----
 
-**🎨 Made with ❤️ by ezellhof**
-
-**🎯 Ready to revolutionize your screenshot workflows? Get started with one command!**
-
-```powershell
-.\OP-min_ScreenAssembly.ps1 -setup
-```
-
-
+[![Made with ❤️](https://img.shields.io/badge/Made%20with-❤️-red?style=for-the-badge)](https://github.com/Ezellhof)
 
 </div>
 
