@@ -152,10 +152,6 @@ After running `-setup`, the following files are created:
 - When prompted "Install Windows Context Menu Integration? (Y/n)", press Enter or type Y
 - UAC prompt will appear - Enter Password for your User
 
-**📋 Manual Installation:**
-- Use the generated `Install_Context_Menu.reg` file (created during setup)
-- Double-click and accept the registry modification prompt
-
 ---
 
 ## 🔩 Parallel Execution:
@@ -164,15 +160,15 @@ After running `-setup`, the following files are created:
   <img src="assets/video/thumbnails/parallel_thumb.jpg" alt="Play Video" width="720">
 </a>
 
-
 - **Process multiple** screenshot folders simultaneously for **maximum efficiency.**
 
 ---
 
 ## 🎯 Clean Output & Zoom:
 
-[](assets/video/doc_zoom.mp4)
-[![Thumbnail](assets\video\thumbnails\zoom_thumb.jpg)](assets/video/doc_zoom.mp4)
+<a href="/assets/video/doc_zoom.mp4">
+  <img src="assets/video/thumbnails/zoom_thumb.jpg" alt="Play Video" width="720">
+</a>
 
 - Explore the **High-Quality** output and **Zoom functionality** of the generated montages.
 
