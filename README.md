@@ -142,8 +142,6 @@ After running `-setup`, the following files are created:
 
 ## 💎 Windows Context Menu:
 
-[![Thumbnail](assets/video/thumbnails/context_thumb.jpg)](assets/video/doc_context.mp4)
-
 <a href="/assets/video/doc_context.mp4">
   <img src="/assets/video/thumbnails/context_thumb.jpg" alt="Play Video" width="720">
 </a>
@@ -162,7 +160,10 @@ After running `-setup`, the following files are created:
 
 ## 🔩 Parallel Execution:
 
-[![Thumbnail](assets\video\thumbnails\parallel_thumb.jpg)](assets/video/doc_parallel.mp4)
+<a href="/assets/video/doc_parallel.mp4">
+  <img src="assets/video/thumbnails/parallel_thumb.jpg" alt="Play Video" width="720">
+</a>
+
 
 - **Process multiple** screenshot folders simultaneously for **maximum efficiency.**
 
