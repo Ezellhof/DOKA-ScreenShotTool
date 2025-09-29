@@ -9,16 +9,16 @@
   [switch]$c
 )
 
-# OP-ScreenAssembly v1.0 - Doka Screenshot Montage Tool
+# Doka-ScreenShotTool v1.0 - Doka Screenshot Montage Tool
 # Optimized, production-ready version with robust ImageMagick setup and auto heuristics
 # Made for Doka by ezellhof - https://github.com/Ezellhof/DOKA-ScreenShotTool
 
 # Globals
-$ToolName = "OP-ScreenAssembly"
+$ToolName = "Doka-ScreenShotTool"
 $Version  = "v1.0"
 $Portable = Join-Path $env:LOCALAPPDATA "ImageMagick-Portable"
 $FallbackUrl = "https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-7.1.1-32-portable-Q16-x64.zip"
-$InstallDir = Join-Path $env:LOCALAPPDATA "OP-ScreenAssembly"
+$InstallDir = Join-Path $env:LOCALAPPDATA "Doka-ScreenShotTool"
 
 function Show-Footer {
   param(
@@ -180,7 +180,7 @@ function New-RegistryFiles {
   
   try {
     # Escape paths for registry format (double backslashes)
-    $ScriptPathEsc = (Join-Path $InstallPath "OP-ScreenAssembly.ps1") -replace '\\', '\\'
+    $ScriptPathEsc = (Join-Path $InstallPath "Doka-ScreenShotTool.ps1") -replace '\\', '\\'
     $IconPathEsc = if($IconPath) { $IconPath -replace '\\', '\\' } else { '' }
     
     # Find template files
@@ -225,7 +225,7 @@ function Install-ToolAssets {
   try{
     if(-not (Test-Path $InstallDir)){ New-Item -ItemType Directory -Path $InstallDir | Out-Null }
     $ScriptSrc = if($PSCommandPath){ $PSCommandPath } else { $MyInvocation.MyCommand.Path }
-    $ScriptDest = Join-Path $InstallDir "OP-ScreenAssembly.ps1"
+    $ScriptDest = Join-Path $InstallDir "Doka-ScreenShotTool.ps1"
     Copy-Item -Path $ScriptSrc -Destination $ScriptDest -Force
     # Try to copy icon from assets directory
     $ScriptRoot = Split-Path -Parent $ScriptSrc
@@ -258,7 +258,7 @@ function Install-ToolAssets {
     # Write as separate lines to ensure proper CRLF without literal backticks; %ENV% expands in cmd at runtime
     $CmdLines = @(
       '@echo off',
-      'powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%LOCALAPPDATA%\OP-ScreenAssembly\OP-ScreenAssembly.ps1" %*'
+      'powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%LOCALAPPDATA%\Doka-ScreenShotTool\Doka-ScreenShotTool.ps1" %*'
     )
   Set-Content -Path $CmdPath -Value $CmdLines -Encoding ASCII -Force
   # Expose a user env var for direct invocation via $env:SCMONTAGE

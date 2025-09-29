@@ -75,7 +75,7 @@
 
 ## 💎 Usage with Windows Context Menu Integration:
 
-- Select as many Folders as you want => Rightclick => Click **OP-ScreenAssembly (Auto)** **[See Video](#windows-context-menu-integration)**
+- Select as many Folders as you want => Rightclick => Click **Doka-ScreenShotTool (Auto)** **[See Video](#windows-context-menu-integration)**
 
 ## 🛸 Useage without Context Menu Integration:
 ```powershell
@@ -102,7 +102,7 @@ scmontage -a .\screenshot-folder\
 
 ## 🎯 Setup Features
 
-- **🏠 LocalAppData Installation** - No admin rights required, installed to `%LOCALAPPDATA%\OP-ScreenAssembly`
+- **🏠 LocalAppData Installation** - No admin rights required, installed to `%LOCALAPPDATA%\Doka-ScreenShotTool`
 - **🔗 Global Access** - Creates `scmontage` command available from any directory
 - **📋 Dynamic Registry Files** - Generates personalized context menu files for your system
 - **🎨 ASCII Art Branding** - Beautiful terminal output with DOKA logo and colored borders
@@ -119,8 +119,8 @@ scmontage -a .\screenshot-folder\
 
 After running `-setup`, the following files are created:
 
-**📍 In `%LOCALAPPDATA%\OP-ScreenAssembly\`:**
-- `OP-ScreenAssembly.ps1` - Main script
+**📍 In `%LOCALAPPDATA%\Doka-ScreenShotTool\`:**
+- `Doka-ScreenShotTool.ps1` - Main script
 - `scmontage.cmd` - Global command shim
 - `Doka.ico` - Context menu icon
 - `doka_ascii.txt` - ASCII art for branding
