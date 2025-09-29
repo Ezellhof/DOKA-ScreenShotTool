@@ -1,4 +1,4 @@
-# <img src="assets/doka_branding_github/Doka_Logo_Square_RGB.svg" alt="Logo" style="height: 1.2em; vertical-align: middle; margin-bottom: 15px;"> Doka Screenshot Tool
+# <img src="assets/doka_branding_github/Doka_Logo_Square_RGB.svg" alt="Logo" style="height: 1.0em; vertical-align: middle;"> Doka Screenshot Tool
 
 <div align="center">
 
