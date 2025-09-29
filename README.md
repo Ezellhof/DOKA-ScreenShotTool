@@ -64,7 +64,7 @@
 
 ```powershell
 # Complete setup with optional context menu integration
-.\OP-min_ScreenAssembly.ps1 -setup
+.\Doka-ScreenShotTool.ps1 -setup
 
 # The setup will:
 # ✅ Download & install portable ImageMagick
@@ -83,7 +83,7 @@
 scmontage -a .\screenshot-folder\
 
 # Or direct script execution:
-.\OP-min_ScreenAssembly.ps1 -a .\screenshot-folder\
+.\Doka-ScreenShotTool.ps1 -a .\screenshot-folder\
 ```
 
 ### 📋 Flags / Command Options
@@ -148,7 +148,7 @@ After running `-setup`, the following files are created:
 
 
 **🆕 Automated Installation:**
-- Run `.\OP-min_ScreenAssembly.ps1 -setup`
+- Run `.\Doka-ScreenShotTool.ps1 -setup`
 - When prompted "Install Windows Context Menu Integration? (Y/n)", press Enter or type Y
 - UAC prompt will appear - Enter Password for your User
 
