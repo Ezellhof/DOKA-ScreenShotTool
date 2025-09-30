@@ -34,8 +34,8 @@ $script:Config = @{
   
   # Border Settings
   Border = @{
-    BlueWidth = 8      # Blue outer border width
-    YellowWidth = 4    # Yellow inner border width (2x blue)
+    StripeWidth = 2    # Width of each color stripe
+    StripeCount = 2    # How many times to repeat the pattern (blue-yellow)
     Spacing = 12
   }
   
@@ -488,18 +488,27 @@ function New-UnifiedMontage {
     }
   }
   
-  # Build ImageMagick arguments with DOKA branded dual borders
-  # Apply yellow inner border first (thicker), then blue outer border (thinner)
+  # Build ImageMagick arguments with DOKA branded striped borders
+  # Create alternating blue-yellow striped pattern
   $imArgs = @('montage')
   foreach($f in $Images){ $imArgs += $f.FullName }
   $imArgs += @(
     '-tile', $tile,
     '-geometry', $geometry,
-    '-background', $(if($IsDark){$script:Config.Colors.DarkBg}else{$script:Config.Colors.LightBg}),
-    '-bordercolor', $script:Config.Colors.DokaYellow,
-    '-border', $script:Config.Border.YellowWidth,
-    '-bordercolor', $script:Config.Colors.DokaBlue, 
-    '-border', $script:Config.Border.BlueWidth,
+    '-background', $(if($IsDark){$script:Config.Colors.DarkBg}else{$script:Config.Colors.LightBg})
+  )
+
+  # Add alternating color borders
+  for($i = 0; $i -lt $script:Config.Border.StripeCount; $i++){
+    $imArgs += @(
+      '-bordercolor', $script:Config.Colors.DokaBlue,
+      '-border', $script:Config.Border.StripeWidth,
+      '-bordercolor', $script:Config.Colors.DokaYellow,
+      '-border', $script:Config.Border.StripeWidth
+    )
+  }
+
+  $imArgs += @(
     '-shadow',
     '-quality', '95',
     '-density', '150',
