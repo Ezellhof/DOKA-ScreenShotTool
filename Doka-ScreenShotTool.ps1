@@ -492,19 +492,24 @@ function New-UnifiedMontage {
   $imArgs = @('montage')
   foreach($f in $Images){ $imArgs += $f.FullName }
   $imArgs += @(
-    '-tile', $tile,
-    '-geometry', $geometry,
-    '-background', $(if($IsDark){$script:Config.Colors.DarkBg}else{$script:Config.Colors.LightBg}),
-    # Apply yellow first (will be inner), then blue (will be outer)
-    '-bordercolor', $script:Config.Colors.DokaYellow,
-    '-border', $script:Config.Border.YellowWidth,
-    '-bordercolor', $script:Config.Colors.DokaBlue,
-    '-border', $script:Config.Border.BlueWidth,
-    '-shadow',
-    '-quality', '95',
-    '-density', '150',
-    $outPath
-  )
+  '-tile', $tile,
+  '-geometry', $geometry,
+  '-background', $(if($IsDark){$script:Config.Colors.DarkBg}else{$script:Config.Colors.LightBg}),
+
+  # Inner border (yellow)
+  '-bordercolor', $script:Config.Colors.DokaYellow,
+  '-border',      $script:Config.Border.YellowWidth,
+
+  # Outer frame (blue) — use frame+mattecolor so it stacks with border
+  '-mattecolor',  $script:Config.Colors.DokaBlue,
+  '-frame',       ("{0}x{0}" -f $script:Config.Border.BlueWidth),
+
+  '-shadow',
+  '-quality', '95',
+  '-density', '150',
+  $outPath
+  ) 
+
   
   & $MagickPath @imArgs
   
