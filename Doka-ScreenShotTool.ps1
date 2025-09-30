@@ -383,16 +383,32 @@ function New-Montage([bool]$isPortrait,[bool]$isDark,[string]$inputFolder,[strin
   $themeText = if($isDark){'Dark'}else{'Light'}
   $grid = Get-OptimalGrid -count $imageCount -orientation $orientation
   $bg   = if($isDark){"#1e1e1e"}else{"#e6e6e6"}
-  $bor  = if($isDark){"#fc59a3"}else{"#8e3ccb"}
+  
+  # DOKA Brand Colors for borders
+  $dokaYellow = "#ffdd00"
+  $dokaBlue = "#004588"
+  
   $suffix = if($modeDescription -eq "Auto"){"_Auto"}else{""}
   $outFile = "${orientationText}_${themeText}_${folderName}${suffix}.png"
   $outPath = Join-Path $outputFolder $outFile
 
-  Write-Host ("Creating {0} {1} montage ({2}x{3})..." -f $orientationText,$themeText,$grid.Columns,$grid.Rows) -ForegroundColor Cyan
+  Write-Host ("Creating {0} {1} montage ({2}x{3}) with DOKA branded borders..." -f $orientationText,$themeText,$grid.Columns,$grid.Rows) -ForegroundColor Cyan
   $tile = "$($grid.Columns)x$($grid.Rows)"
   $imArgs = @('montage')
   foreach($f in $files){ $imArgs += $f.FullName }
-  $imArgs += @('-tile', $tile, '-geometry', '+12+12', '-background', $bg, '-bordercolor', $bor, '-border', '6', '-shadow', '-quality', '95', '-density', '150', $outPath)
+  $imArgs += @(
+    '-tile', $tile, 
+    '-geometry', '+12+12', 
+    '-background', $bg, 
+    '-bordercolor', $dokaYellow, 
+    '-border', '3', 
+    '-bordercolor', $dokaBlue, 
+    '-border', '3', 
+    '-shadow', 
+    '-quality', '95', 
+    '-density', '150', 
+    $outPath
+  )
   & $magick @imArgs
   if($LASTEXITCODE -eq 0){ Write-Host "SUCCESS: $outFile" -ForegroundColor Green; return $true }
   else { Write-Host "FAILED: $outFile (exit $LASTEXITCODE)" -ForegroundColor Red; return $false }
@@ -506,10 +522,26 @@ function Main {
     $outFile = if($outFileOverride){ $outFileOverride } else { "Stack_${modeText}_${folderName}.png" }
     $outPath = Join-Path $outputFolder $outFile
     $bg  = if($isDark){ "#1e1e1e" } else { "#e6e6e6" }
-    $bor = if($isDark){ "#fc59a3" } else { "#8e3ccb" }
+    
+    # DOKA Brand Colors for borders
+    $dokaYellow = "#ffdd00"
+    $dokaBlue = "#004588"
+    
     $imArgs = @('montage')
     foreach($f in $images){ $imArgs += $f.FullName }
-    $imArgs += @('-tile', $tile, '-geometry', $geometry, '-background', $bg, '-bordercolor', $bor, '-border', '6', '-shadow', '-quality', '95', '-density', '150', $outPath)
+    $imArgs += @(
+      '-tile', $tile, 
+      '-geometry', $geometry, 
+      '-background', $bg, 
+      '-bordercolor', $dokaYellow, 
+      '-border', '3', 
+      '-bordercolor', $dokaBlue, 
+      '-border', '3', 
+      '-shadow', 
+      '-quality', '95', 
+      '-density', '150', 
+      $outPath
+    )
     & $magick @imArgs
     
     # Return both success status and filename
@@ -537,10 +569,26 @@ function New-CarouselMontage($images, $magick, $Folder, $isDark, $outFileOverrid
     $outFile = if($outFileOverride){ $outFileOverride } else { "Carousel_${modeText}_${folderName}.png" }
     $outPath = Join-Path $outputFolder $outFile
     $bg  = if($isDark){ "#1e1e1e" } else { "#e6e6e6" }
-    $bor = if($isDark){ "#fc59a3" } else { "#8e3ccb" }
+    
+    # DOKA Brand Colors for borders
+    $dokaYellow = "#ffdd00"
+    $dokaBlue = "#004588"
+    
     $imArgs = @('montage')
     foreach($f in $images){ $imArgs += $f.FullName }
-    $imArgs += @('-tile', $tile, '-geometry', $geometry, '-background', $bg, '-bordercolor', $bor, '-border', '6', '-shadow', '-quality', '95', '-density', '150', $outPath)
+    $imArgs += @(
+      '-tile', $tile, 
+      '-geometry', $geometry, 
+      '-background', $bg, 
+      '-bordercolor', $dokaYellow, 
+      '-border', '3', 
+      '-bordercolor', $dokaBlue, 
+      '-border', '3', 
+      '-shadow', 
+      '-quality', '95', 
+      '-density', '150', 
+      $outPath
+    )
     & $magick @imArgs
     
     # Return both success status and filename
