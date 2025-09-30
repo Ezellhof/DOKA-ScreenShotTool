@@ -1,6 +1,6 @@
 Windows Registry Editor Version 5.00
 
-; Remove OP ScreenAssembly context menu entries (per-user)
+; Remove Doka ScreenShotTool context menu entries (per-user)
 ; Import this file to remove the custom cascaded menu and its sub commands. You
 ; may need to restart Explorer or log out/in for the menu to disappear.
 
@@ -11,13 +11,13 @@ Windows Registry Editor Version 5.00
 [-HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenMontage]
 [-HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenMontage]
 Windows Registry Editor Version 5.00
-; OP ScreenAssembly Context Menu (User scope)
+; Doka ScreenShotTool Context Menu (User scope)
 ; Generated automatically during setup
 ; Cleans previous entries (old names and locations)
 Windows Registry Editor Version 5.00
 
-; OP ScreenAssembly context menu integration (per-user)
-; This file creates a cascaded entry named "OP ScreenAssembly" in the folder and
+; Doka ScreenShotTool context menu integration (per-user)
+; This file creates a cascaded entry named "Doka ScreenShotTool" in the folder and
 ; folder-background context menus. Each submenu launches the script with a
 ; different switch. Import this file with regedit (double-click in Explorer or
 ; run `reg import`).
@@ -28,68 +28,82 @@ Windows Registry Editor Version 5.00
 
 ; Top-level entry when right-clicking a folder
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\Doka-ScreenShotTool]
-"MUIVerb"="OP ScreenAssembly"
+"MUIVerb"="Doka ScreenShotTool"
 "Icon"="{{ICON_PATH}}"
 "subcommands"=""
+
+; Auto montage option (Auto grid)
+[HKEY_CURRENT_USER\Software\Classes\directory\shell\Doka-ScreenShotTool\shell\Auto]
+@="1 Auto Montage"
+"Icon"="{{AUTO_ICON_PATH}}"
+[HKEY_CURRENT_USER\Software\Classes\directory\shell\Doka-ScreenShotTool\shell\Auto\command]
+@="cmd.exe /c start \"Doka ScreenShotTool\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -a \"%V\""
 
 ; Wide montage option (landscape grid)
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\Doka-ScreenShotTool\shell\Wide]
-@="Wide Montage"
-"Icon"="{{ICON_PATH}}"
+@="2 Wide Montage"
+"Icon"="{{WIDE_ICON_PATH}}"
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\Doka-ScreenShotTool\shell\Wide\command]
-@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -w \"%V\""
+@="cmd.exe /c start \"Doka ScreenShotTool\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -w \"%V\""
 
 ; Portrait montage option (portrait grid)
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\Doka-ScreenShotTool\shell\Portrait]
-@="Portrait Montage"
-"Icon"="{{ICON_PATH}}"
+@="3 Portrait Montage"
+"Icon"="{{PORT_ICON_PATH}}"
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\Doka-ScreenShotTool\shell\Portrait\command]
-@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -p \"%V\""
+@="cmd.exe /c start \"Doka ScreenShotTool\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -p \"%V\""
 
 ; Stack horizontally option
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\Doka-ScreenShotTool\shell\Stack]
-@="Stack (Horizontal)"
-"Icon"="{{ICON_PATH}}"
+@="4 Stack (Horizontal)"
+"Icon"="{{STACK_ICON_PATH}}"
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\Doka-ScreenShotTool\shell\Stack\command]
-@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -s \"%V\""
+@="cmd.exe /c start \"Doka ScreenShotTool\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -s \"%V\""
 
 ; Carousel vertically option
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\Doka-ScreenShotTool\shell\Carousel]
-@="Carousel (Vertical)"
-"Icon"="{{ICON_PATH}}"
+@="5 Carousel (Vertical)"
+"Icon"="{{CARO_ICON_PATH}}"
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\Doka-ScreenShotTool\shell\Carousel\command]
-@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -c \"%V\""
+@="cmd.exe /c start \"Doka ScreenShotTool\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -c \"%V\""
 
 ; Top-level entry when right-clicking the blank area inside a folder (background)
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\Doka-ScreenShotTool]
-"MUIVerb"="OP ScreenAssembly"
+"MUIVerb"="Doka ScreenShotTool"
 "Icon"="{{ICON_PATH}}"
 "subcommands"=""
 
+; Auto montage in background (Auto grid)
+[HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\Doka-ScreenShotTool\shell\Auto]
+@="1 Auto Montage"
+"Icon"="{{AUTO_ICON_PATH}}"
+[HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\Doka-ScreenShotTool\shell\Auto\command]
+@="cmd.exe /c start \"Doka ScreenShotTool\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -a \"%V\""
+
 ; Wide montage in background
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\Doka-ScreenShotTool\shell\Wide]
-@="Wide Montage"
-"Icon"="{{ICON_PATH}}"
+@="2 Wide Montage"
+"Icon"="{{WIDE_ICON_PATH}}"
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\Doka-ScreenShotTool\shell\Wide\command]
-@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -w \"%V\""
+@="cmd.exe /c start \"Doka ScreenShotTool\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -w \"%V\""
 
 ; Portrait montage in background
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\Doka-ScreenShotTool\shell\Portrait]
-@="Portrait Montage"
-"Icon"="{{ICON_PATH}}"
+@="3 Portrait Montage"
+"Icon"="{{PORT_ICON_PATH}}"
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\Doka-ScreenShotTool\shell\Portrait\command]
-@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -p \"%V\""
+@="cmd.exe /c start \"Doka ScreenShotTool\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -p \"%V\""
 
 ; Stack horizontally in background
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\Doka-ScreenShotTool\shell\Stack]
-@="Stack (Horizontal)"
-"Icon"="{{ICON_PATH}}"
+@="4 Stack (Horizontal)"
+"Icon"="{{STACK_ICON_PATH}}"
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\Doka-ScreenShotTool\shell\Stack\command]
-@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -s \"%V\""
+@="cmd.exe /c start \"Doka ScreenShotTool\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -s \"%V\""
 
 ; Carousel vertically in background
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\Doka-ScreenShotTool\shell\Carousel]
-@="Carousel (Vertical)"
-"Icon"="{{ICON_PATH}}"
+@="5 Carousel (Vertical)"
+"Icon"="{{CARO_ICON_PATH}}"
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\Doka-ScreenShotTool\shell\Carousel\command]
-@="cmd.exe /c start \"OP ScreenAssembly\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -c \"%V\""
+@="cmd.exe /c start \"Doka ScreenShotTool\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -c \"%V\""

@@ -183,6 +183,14 @@ function New-RegistryFiles {
     $ScriptPathEsc = (Join-Path $InstallPath "Doka-ScreenShotTool.ps1") -replace '\\', '\\'
     $IconPathEsc = if($IconPath) { $IconPath -replace '\\', '\\' } else { '' }
     
+    # Define all icon paths
+    $AssetsPath = Join-Path $ScriptRoot "assets"
+    $AutoIconPath = if(Test-Path (Join-Path $AssetsPath "Auto.ico")) { (Join-Path $InstallPath "Auto.ico") -replace '\\', '\\' } else { $IconPathEsc }
+    $WideIconPath = if(Test-Path (Join-Path $AssetsPath "Wide.ico")) { (Join-Path $InstallPath "Wide.ico") -replace '\\', '\\' } else { $IconPathEsc }
+    $PortIconPath = if(Test-Path (Join-Path $AssetsPath "Port.ico")) { (Join-Path $InstallPath "Port.ico") -replace '\\', '\\' } else { $IconPathEsc }
+    $StackIconPath = if(Test-Path (Join-Path $AssetsPath "Stack.ico")) { (Join-Path $InstallPath "Stack.ico") -replace '\\', '\\' } else { $IconPathEsc }
+    $CaroIconPath = if(Test-Path (Join-Path $AssetsPath "Caro.ico")) { (Join-Path $InstallPath "Caro.ico") -replace '\\', '\\' } else { $IconPathEsc }
+    
     # Find template files
     $InstallTemplate = Join-Path (Join-Path $ScriptRoot "assets") "Install_Context_Menu.reg.template"
     $UninstallTemplate = Join-Path (Join-Path $ScriptRoot "assets") "Uninstall_Context_Menu.reg.template"
@@ -192,6 +200,11 @@ function New-RegistryFiles {
       $InstallContent = Get-Content -Path $InstallTemplate -Raw -Encoding UTF8
       $InstallContent = $InstallContent -replace '\{\{SCRIPT_PATH\}\}', $ScriptPathEsc
       $InstallContent = $InstallContent -replace '\{\{ICON_PATH\}\}', $IconPathEsc
+      $InstallContent = $InstallContent -replace '\{\{AUTO_ICON_PATH\}\}', $AutoIconPath
+      $InstallContent = $InstallContent -replace '\{\{WIDE_ICON_PATH\}\}', $WideIconPath
+      $InstallContent = $InstallContent -replace '\{\{PORT_ICON_PATH\}\}', $PortIconPath
+      $InstallContent = $InstallContent -replace '\{\{STACK_ICON_PATH\}\}', $StackIconPath
+      $InstallContent = $InstallContent -replace '\{\{CARO_ICON_PATH\}\}', $CaroIconPath
       
       # Write install registry file
       $InstallRegPath = Join-Path $InstallPath "Install_Context_Menu.reg"
@@ -227,11 +240,25 @@ function Install-ToolAssets {
     $ScriptSrc = if($PSCommandPath){ $PSCommandPath } else { $MyInvocation.MyCommand.Path }
     $ScriptDest = Join-Path $InstallDir "Doka-ScreenShotTool.ps1"
     Copy-Item -Path $ScriptSrc -Destination $ScriptDest -Force
-    # Try to copy icon from assets directory
+    # Try to copy main icon from assets directory
     $ScriptRoot = Split-Path -Parent $ScriptSrc
-    $IconSrc = Join-Path (Join-Path $ScriptRoot "assets") "Doka.ico"
+    $AssetsPath = Join-Path $ScriptRoot "assets"
+    $IconSrc = Join-Path $AssetsPath "Doka.ico"
     $IconDest = Join-Path $InstallDir "Doka.ico"
     if(Test-Path $IconSrc){ Copy-Item -Path $IconSrc -Destination $IconDest -Force } else { $IconDest = $null }
+    
+    # Copy all option-specific icons
+    $OptionIcons = @("Auto.ico", "Wide.ico", "Port.ico", "Stack.ico", "Caro.ico")
+    foreach($IconFile in $OptionIcons) {
+      $OptionIconSrc = Join-Path $AssetsPath $IconFile
+      $OptionIconDest = Join-Path $InstallDir $IconFile
+      if(Test-Path $OptionIconSrc) { 
+        Copy-Item -Path $OptionIconSrc -Destination $OptionIconDest -Force 
+        Write-Host "Copied $IconFile to install directory" -ForegroundColor DarkGray
+      } else {
+        Write-Host "Warning: $IconFile not found in assets directory" -ForegroundColor Yellow
+      }
+    }
     # Try to copy ASCII art file from assets directory
     $ArtDest = $null
     $ArtSrcCandidates = @(
