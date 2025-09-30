@@ -34,7 +34,7 @@ $script:Config = @{
   
   # Border Settings
   Border = @{
-    YellowWidth = 2    # Inner yellow (thin)
+    YellowWidth = 5    # Inner yellow (thin)
     BlueWidth = 5      # Outer blue (thick - will show both colors)
     Spacing = 12
   }
@@ -488,30 +488,40 @@ function New-UnifiedMontage {
     }
   }
   
-  # Build ImageMagick arguments with DOKA branded dual borders
-  $imArgs = @('montage')
-  foreach($f in $Images){ $imArgs += $f.FullName }
-  $imArgs += @(
-  '-tile', $tile,
-  '-geometry', $geometry,
-  '-background', $(if($IsDark){$script:Config.Colors.DarkBg}else{$script:Config.Colors.LightBg}),
-
-  # Inner border (yellow)
-  '-bordercolor', $script:Config.Colors.DokaYellow,
-  '-border',      $script:Config.Border.YellowWidth,
-
-  # Outer frame (blue) — use frame+mattecolor so it stacks with border
-  '-mattecolor',  $script:Config.Colors.DokaBlue,
-  '-frame',       ("{0}x{0}" -f $script:Config.Border.BlueWidth),
-
-  '-shadow',
-  '-quality', '95',
-  '-density', '150',
-  $outPath
-  ) 
-
+  # 1) Create temporary directory for bordered images
+  $tempDir = Join-Path $env:TEMP "DokaMontage_$(Get-Random)"
+  New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
   
+  # 2) Apply DOKA borders to each individual image
+  $borderedImages = @()
+  foreach($img in $Images) {
+    $tempImg = Join-Path $tempDir "bordered_$($img.Name)"
+    
+    # Apply dual borders to individual image
+    & $MagickPath $img.FullName `
+      -bordercolor $script:Config.Colors.DokaYellow -border $script:Config.Border.YellowWidth `
+      -bordercolor $script:Config.Colors.DokaBlue   -border $script:Config.Border.BlueWidth `
+      $tempImg
+    
+    $borderedImages += $tempImg
+  }
+
+  # 3) Create montage from bordered images
+  $imArgs = @('montage')
+  foreach($f in $borderedImages){ $imArgs += $f }
+  $imArgs += @(
+    '-tile', $tile,
+    '-geometry', $geometry,
+    '-background', $(if($IsDark){$script:Config.Colors.DarkBg}else{$script:Config.Colors.LightBg}),
+    '-shadow',
+    '-quality', '95',
+    '-density', '150',
+    $outPath
+  )
+
+  # 4) Run montage and cleanup
   & $MagickPath @imArgs
+  Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue
   
   $success = ($LASTEXITCODE -eq 0)
   if($success){ 
