@@ -34,8 +34,8 @@ $script:Config = @{
   
   # Border Settings
   Border = @{
-    BlueWidth = 3      # Blue outer border width
-    YellowWidth = 6    # Yellow inner border width (2x blue)
+    BlueWidth = 8      # Blue outer border width
+    YellowWidth = 4    # Yellow inner border width (2x blue)
     Spacing = 12
   }
   
