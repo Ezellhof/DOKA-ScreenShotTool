@@ -34,8 +34,8 @@ $script:Config = @{
   
   # Border Settings
   Border = @{
-    InnerWidth = 3
-    OuterWidth = 6
+    BlueWidth = 3      # Blue outer border width
+    YellowWidth = 6    # Yellow inner border width (2x blue)
     Spacing = 12
   }
   
@@ -489,7 +489,7 @@ function New-UnifiedMontage {
   }
   
   # Build ImageMagick arguments with DOKA branded dual borders
-  # Apply yellow inner border first, then blue outer border 
+  # Apply yellow inner border first (thicker), then blue outer border (thinner)
   $imArgs = @('montage')
   foreach($f in $Images){ $imArgs += $f.FullName }
   $imArgs += @(
@@ -497,9 +497,9 @@ function New-UnifiedMontage {
     '-geometry', $geometry,
     '-background', $(if($IsDark){$script:Config.Colors.DarkBg}else{$script:Config.Colors.LightBg}),
     '-bordercolor', $script:Config.Colors.DokaYellow,
-    '-border', $script:Config.Border.InnerWidth,
+    '-border', $script:Config.Border.YellowWidth,
     '-bordercolor', $script:Config.Colors.DokaBlue, 
-    '-border', $script:Config.Border.InnerWidth,
+    '-border', $script:Config.Border.BlueWidth,
     '-shadow',
     '-quality', '95',
     '-density', '150',
