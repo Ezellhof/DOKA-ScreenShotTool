@@ -67,6 +67,13 @@ Windows Registry Editor Version 5.00
 [HKEY_CURRENT_USER\Software\Classes\directory\shell\Doka-ScreenShotTool\shell\Carousel\command]
 @="cmd.exe /c start \"Doka ScreenShotTool\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -c \"%V\""
 
+; Test mode option (creates all 8 combinations)
+[HKEY_CURRENT_USER\Software\Classes\directory\shell\Doka-ScreenShotTool\shell\Test]
+@="6 Test Mode"
+"Icon"="{{TEST_ICON_PATH}}"
+[HKEY_CURRENT_USER\Software\Classes\directory\shell\Doka-ScreenShotTool\shell\Test\command]
+@="cmd.exe /c start \"Doka ScreenShotTool\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -t \"%V\""
+
 ; Top-level entry when right-clicking the blank area inside a folder (background)
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\Doka-ScreenShotTool]
 "MUIVerb"="Doka ScreenShotTool"
@@ -107,3 +114,10 @@ Windows Registry Editor Version 5.00
 "Icon"="{{CARO_ICON_PATH}}"
 [HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\Doka-ScreenShotTool\shell\Carousel\command]
 @="cmd.exe /c start \"Doka ScreenShotTool\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -c \"%V\""
+
+; Test mode in background
+[HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\Doka-ScreenShotTool\shell\Test]
+@="6 Test Mode"
+"Icon"="{{TEST_ICON_PATH}}"
+[HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\Doka-ScreenShotTool\shell\Test\command]
+@="cmd.exe /c start \"Doka ScreenShotTool\" powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{{SCRIPT_PATH}}\" -t \"%V\""

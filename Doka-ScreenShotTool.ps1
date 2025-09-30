@@ -190,6 +190,7 @@ function New-RegistryFiles {
     $PortIconPath = if(Test-Path (Join-Path $AssetsPath "Port.ico")) { (Join-Path $InstallPath "Port.ico") -replace '\\', '\\' } else { $IconPathEsc }
     $StackIconPath = if(Test-Path (Join-Path $AssetsPath "Stack.ico")) { (Join-Path $InstallPath "Stack.ico") -replace '\\', '\\' } else { $IconPathEsc }
     $CaroIconPath = if(Test-Path (Join-Path $AssetsPath "Caro.ico")) { (Join-Path $InstallPath "Caro.ico") -replace '\\', '\\' } else { $IconPathEsc }
+    $TestIconPath = if(Test-Path (Join-Path $AssetsPath "Test.ico")) { (Join-Path $InstallPath "Test.ico") -replace '\\', '\\' } else { $IconPathEsc }
     
     # Find template files
     $InstallTemplate = Join-Path (Join-Path $ScriptRoot "assets") "Install_Context_Menu.reg.template"
@@ -205,6 +206,7 @@ function New-RegistryFiles {
       $InstallContent = $InstallContent -replace '\{\{PORT_ICON_PATH\}\}', $PortIconPath
       $InstallContent = $InstallContent -replace '\{\{STACK_ICON_PATH\}\}', $StackIconPath
       $InstallContent = $InstallContent -replace '\{\{CARO_ICON_PATH\}\}', $CaroIconPath
+      $InstallContent = $InstallContent -replace '\{\{TEST_ICON_PATH\}\}', $TestIconPath
       
       # Write install registry file
       $InstallRegPath = Join-Path $InstallPath "Install_Context_Menu.reg"
@@ -248,7 +250,7 @@ function Install-ToolAssets {
     if(Test-Path $IconSrc){ Copy-Item -Path $IconSrc -Destination $IconDest -Force } else { $IconDest = $null }
     
     # Copy all option-specific icons
-    $OptionIcons = @("Auto.ico", "Wide.ico", "Port.ico", "Stack.ico", "Caro.ico")
+    $OptionIcons = @("Auto.ico", "Wide.ico", "Port.ico", "Stack.ico", "Caro.ico", "Test.ico")
     foreach($IconFile in $OptionIcons) {
       $OptionIconSrc = Join-Path $AssetsPath $IconFile
       $OptionIconDest = Join-Path $InstallDir $IconFile
