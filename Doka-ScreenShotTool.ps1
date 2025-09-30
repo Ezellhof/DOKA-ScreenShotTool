@@ -321,7 +321,7 @@ function Install-ToolAssets {
     $CmdPath = Join-Path $script:Config.InstallDir "scmontage.cmd"
     $CmdLines = @(
       '@echo off',
-      "powershell.exe -NoProfile -ExecutionPolicy Bypass -File `"%LOCALAPPDATA%\$($script:Config.ToolName)\$($script:Config.ToolName).ps1`" %*"
+      'powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%LOCALAPPDATA%\Doka-ScreenShotTool\Doka-ScreenShotTool.ps1" %*'
     )
     Set-Content -Path $CmdPath -Value $CmdLines -Encoding ASCII -Force
     
