@@ -1,8 +1,8 @@
 Windows Registry Editor Version 5.00
 
-; OP-ScreenAssembly Context Menu Removal
+; Doka-ScreenShotTool Context Menu Removal
 ; Generated automatically during setup
-; Removes all OP-ScreenAssembly entries from Windows context menu
+; Removes all Doka-ScreenShotTool entries from Windows context menu
 ; 
 ; INSTRUCTIONS:
 ; 1. Double-click this file to remove context menu entries
@@ -10,16 +10,16 @@ Windows Registry Editor Version 5.00
 ; 3. Restart Windows Explorer or reboot to see changes
 
 ; Remove folder context menu entry
-[-HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly]
+[-HKEY_CURRENT_USER\Software\Classes\directory\shell\Doka-ScreenShotTool]
 
 ; Remove background context menu entry
-[-HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly]
+[-HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\Doka-ScreenShotTool]
 
-; Remove OP-ScreenAssembly folder context menu entry
-[-HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenAssembly]
+; Remove Doka-ScreenShotTool folder context menu entry
+[-HKEY_CURRENT_USER\Software\Classes\directory\shell\Doka-ScreenShotTool]
 
-; Remove OP-ScreenAssembly background context menu entry
-[-HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\OP-ScreenAssembly]
+; Remove Doka-ScreenShotTool background context menu entry
+[-HKEY_CURRENT_USER\Software\Classes\directory\Background\shell\Doka-ScreenShotTool]
 
 ; Remove legacy names/paths (older versions)
 [-HKEY_CURRENT_USER\Software\Classes\directory\shell\OP-ScreenMontage]
