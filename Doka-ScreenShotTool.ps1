@@ -1,4 +1,4 @@
-﻿param(
+param(
   [Parameter(Position=0)][string]$Folder,
   [switch]$setup,
   [switch]$a,
@@ -9,16 +9,53 @@
   [switch]$c
 )
 
-# Doka-ScreenShotTool v1.0 - Doka Screenshot Montage Tool
-# Optimized, production-ready version with robust ImageMagick setup and auto heuristics
+# Doka-ScreenShotTool v1.1 - Optimized Version
+# Consolidated, production-ready version with robust ImageMagick setup and auto heuristics
 # Made for Doka by ezellhof - https://github.com/Ezellhof/DOKA-ScreenShotTool
 
-# Globals
-$ToolName = "Doka-ScreenShotTool"
-$Version  = "v1.0"
-$Portable = Join-Path $env:LOCALAPPDATA "ImageMagick-Portable"
-$FallbackUrl = "https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-7.1.1-32-portable-Q16-x64.zip"
-$InstallDir = Join-Path $env:LOCALAPPDATA "Doka-ScreenShotTool"
+# ═══════════════════════════════════════════════════════════════════════════════
+# GLOBALS & CONSTANTS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+$script:Config = @{
+  ToolName = "Doka-ScreenShotTool"
+  Version = "v1.1"
+  Portable = Join-Path $env:LOCALAPPDATA "ImageMagick-Portable"
+  FallbackUrl = "https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-7.1.1-32-portable-Q16-x64.zip"
+  InstallDir = Join-Path $env:LOCALAPPDATA "Doka-ScreenShotTool"
+  
+  # DOKA Brand Colors
+  Colors = @{
+    DokaYellow = "#ffdd00"
+    DokaBlue = "#004588"
+    DarkBg = "#1e1e1e"
+    LightBg = "#e6e6e6"
+  }
+  
+  # Border Settings
+  Border = @{
+    InnerWidth = 3
+    OuterWidth = 3
+    Spacing = 12
+  }
+  
+  # Icon Files
+  IconFiles = @("Auto.ico", "Wide.ico", "Port.ico", "Stack.ico", "Caro.ico", "Test.ico")
+  
+  # Montage Types
+  MontageTypes = @{
+    Auto = @{ Switch = "a"; Name = "Auto Montage"; Number = "1" }
+    Wide = @{ Switch = "w"; Name = "Wide Montage"; Number = "2" }
+    Portrait = @{ Switch = "p"; Name = "Portrait Montage"; Number = "3" }
+    Stack = @{ Switch = "s"; Name = "Stack (Horizontal)"; Number = "4" }
+    Carousel = @{ Switch = "c"; Name = "Carousel (Vertical)"; Number = "5" }
+    Test = @{ Switch = "t"; Name = "Test Mode"; Number = "6" }
+  }
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# UTILITY FUNCTIONS
+# ═══════════════════════════════════════════════════════════════════════════════
 
 function Show-Footer {
   param(
@@ -28,30 +65,29 @@ function Show-Footer {
     [System.ConsoleColor]$ContentBackground,
     [bool]$DrawSeparator = $false
   )
-  $title = "  $ToolName - $Version"
+  $title = "  $($script:Config.ToolName) - $($script:Config.Version)"
   $defaultMsg = if ($success) { "  Montage assembled successfully" } else { "  Assembly FAILED - check errors" }
   $content = if ($Lines -and $Lines.Count -gt 0) { $Lines } else { @($defaultMsg) }
-  # Provide 1 space left + 1 space right padding inside the frame
+  
   $inner = ($content + $title | ForEach-Object { $_.Length } | Measure-Object -Maximum).Maximum + 2
-  $top    = '╔' + ('═' * $inner) + '╗'
+  $top = '╔' + ('═' * $inner) + '╗'
   $bottom = '╚' + ('═' * $inner) + '╝'
+  
   Write-Host ""
   Write-Host $top -ForegroundColor Cyan
   Write-Host ('║' + (' ' + $title).PadRight($inner) + '║') -ForegroundColor Blue
+  
   $separatorDrawn = $false
   foreach($c in $content){
     $textCentered = ' ' + $c.PadRight($inner - 1)
     
-    # Check if this line contains ASCII art (@ symbols or starts with dots)
     if(($c -match '@' -or $c -match '^\.*[@.]') -and $ContentBackground){
-      # Draw separator before ASCII art if this is the first art line
       if($DrawSeparator -and -not $separatorDrawn) {
         $separator = '╠' + ('═' * $inner) + '╣'
         Write-Host $separator -ForegroundColor Cyan
         $separatorDrawn = $true
       }
       
-      # For ASCII art lines: apply background to entire art content, trimmed to actual width
       $trimmed = $c.TrimEnd()
       $artLine = ' ' + $trimmed + ' '
       $padding = $inner - $artLine.Length
@@ -64,7 +100,6 @@ function Show-Footer {
       Write-Host $rightPad -NoNewline
       Write-Host '║' -ForegroundColor Cyan
     } else {
-      # For text lines: normal formatting without background
       $line = '║' + $textCentered + '║'
       if ($ContentForeground) {
         Write-Host $line -ForegroundColor $ContentForeground
@@ -90,6 +125,12 @@ function Add-ToUserPath([string]$Path){
   } catch {}
 }
 
+function Get-Images($Directory){ Get-ChildItem -Path $Directory -Filter *.png -File }
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# IMAGEMAGICK MANAGEMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+
 function Get-InstalledVersion {
   try {
     $cmd = Get-Command magick -ErrorAction Stop
@@ -98,7 +139,7 @@ function Get-InstalledVersion {
       return @{ Version=$matches[1]; Path=$cmd.Source; Available=$true }
     }
   } catch {}
-  $portableExe = Join-Path $Portable "magick.exe"
+  $portableExe = Join-Path $script:Config.Portable "magick.exe"
   if(Test-Path $portableExe){
     try{
       $line = & $portableExe --version 2>$null | Select-Object -First 1
@@ -122,9 +163,9 @@ function Get-LatestVersion {
 }
 
 function Install-ImageMagickPortable([string]$DownloadUrl,[string]$Version){
-  if(-not (Test-Path $Portable)){ New-Item -ItemType Directory -Path $Portable | Out-Null }
+  if(-not (Test-Path $script:Config.Portable)){ New-Item -ItemType Directory -Path $script:Config.Portable | Out-Null }
   $ZipFile = Join-Path $env:TEMP "ImageMagick-$Version.zip"
-  $ExtractPath = Join-Path $Portable "_extract"
+  $ExtractPath = Join-Path $script:Config.Portable "_extract"
   try{
     Write-Host "Downloading ImageMagick $Version..." -ForegroundColor Cyan
     Invoke-WebRequest -Uri $DownloadUrl -OutFile $ZipFile -TimeoutSec 60
@@ -133,15 +174,15 @@ function Install-ImageMagickPortable([string]$DownloadUrl,[string]$Version){
     $MagickExe = Get-ChildItem -Path $ExtractPath -Recurse -Filter magick.exe | Select-Object -First 1
     if(-not $MagickExe){ throw "magick.exe not found in archive" }
     $SourceRoot = $MagickExe.DirectoryName
-    Copy-Item -Path (Join-Path $SourceRoot '*') -Destination $Portable -Recurse -Force
-    # Clean up nested folders from previous installs
-    Get-ChildItem -Path $Portable -Directory -ErrorAction SilentlyContinue |
+    Copy-Item -Path (Join-Path $SourceRoot '*') -Destination $script:Config.Portable -Recurse -Force
+    
+    Get-ChildItem -Path $script:Config.Portable -Directory -ErrorAction SilentlyContinue |
       Where-Object { $_.Name -like 'ImageMagick-*-portable-*' } |
       Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
     Remove-Item $ExtractPath -Recurse -Force -ErrorAction SilentlyContinue
     Remove-Item $ZipFile -Force -ErrorAction SilentlyContinue
-    $FinalMagick = Join-Path $Portable "magick.exe"
-    if(Test-Path $FinalMagick){ Add-ToUserPath $Portable; return $FinalMagick }
+    $FinalMagick = Join-Path $script:Config.Portable "magick.exe"
+    if(Test-Path $FinalMagick){ Add-ToUserPath $script:Config.Portable; return $FinalMagick }
     throw "Installation failed"
   } catch {
     Write-Host "Install failed: $($_.Exception.Message)" -ForegroundColor Yellow
@@ -167,48 +208,49 @@ function Initialize-ImageMagick([bool]$ForceUpdate=$false){
     }
     return $Installed.Path
   }
-  $DownloadUrl = if($Latest.Available){ $Latest.DownloadUrl } else { $FallbackUrl }
+  $DownloadUrl = if($Latest.Available){ $Latest.DownloadUrl } else { $script:Config.FallbackUrl }
   $Version = if($Latest.Available){ $Latest.Version } else { "fallback" }
   $MagickPath = Install-ImageMagickPortable -DownloadUrl $DownloadUrl -Version $Version
   return $MagickPath
 }
 
-function Get-Images($Directory){ Get-ChildItem -Path $Directory -Filter *.png -File }
+# ═══════════════════════════════════════════════════════════════════════════════
+# REGISTRY & INSTALLATION MANAGEMENT
+# ═══════════════════════════════════════════════════════════════════════════════
 
 function New-RegistryFiles {
   param([string]$InstallPath, [string]$IconPath, [string]$ScriptRoot)
   
   try {
-    # Escape paths for registry format (double backslashes)
-    $ScriptPathEsc = (Join-Path $InstallPath "Doka-ScreenShotTool.ps1") -replace '\\', '\\'
+    $ScriptPathEsc = (Join-Path $InstallPath "$($script:Config.ToolName).ps1") -replace '\\', '\\'
     $IconPathEsc = if($IconPath) { $IconPath -replace '\\', '\\' } else { '' }
     
-    # Define all icon paths
     $AssetsPath = Join-Path $ScriptRoot "assets"
-    $AutoIconPath = if(Test-Path (Join-Path $AssetsPath "Auto.ico")) { (Join-Path $InstallPath "Auto.ico") -replace '\\', '\\' } else { $IconPathEsc }
-    $WideIconPath = if(Test-Path (Join-Path $AssetsPath "Wide.ico")) { (Join-Path $InstallPath "Wide.ico") -replace '\\', '\\' } else { $IconPathEsc }
-    $PortIconPath = if(Test-Path (Join-Path $AssetsPath "Port.ico")) { (Join-Path $InstallPath "Port.ico") -replace '\\', '\\' } else { $IconPathEsc }
-    $StackIconPath = if(Test-Path (Join-Path $AssetsPath "Stack.ico")) { (Join-Path $InstallPath "Stack.ico") -replace '\\', '\\' } else { $IconPathEsc }
-    $CaroIconPath = if(Test-Path (Join-Path $AssetsPath "Caro.ico")) { (Join-Path $InstallPath "Caro.ico") -replace '\\', '\\' } else { $IconPathEsc }
-    $TestIconPath = if(Test-Path (Join-Path $AssetsPath "Test.ico")) { (Join-Path $InstallPath "Test.ico") -replace '\\', '\\' } else { $IconPathEsc }
+    $IconPaths = @{}
     
-    # Find template files
-    $InstallTemplate = Join-Path (Join-Path $ScriptRoot "assets") "Install_Context_Menu.reg.template"
-    $UninstallTemplate = Join-Path (Join-Path $ScriptRoot "assets") "Uninstall_Context_Menu.reg.template"
+    # Generate icon paths for all montage types
+    foreach($IconFile in $script:Config.IconFiles) {
+      $BaseName = [System.IO.Path]::GetFileNameWithoutExtension($IconFile).ToUpper()
+      $IconPaths["${BaseName}_ICON_PATH"] = if(Test-Path (Join-Path $AssetsPath $IconFile)) { 
+        (Join-Path $InstallPath $IconFile) -replace '\\', '\\' 
+      } else { 
+        $IconPathEsc 
+      }
+    }
+    
+    $InstallTemplate = Join-Path $AssetsPath "Install_Context_Menu.reg.template"
+    $UninstallTemplate = Join-Path $AssetsPath "Uninstall_Context_Menu.reg.template"
     
     if(Test-Path $InstallTemplate) {
-      # Read install template and replace placeholders
       $InstallContent = Get-Content -Path $InstallTemplate -Raw -Encoding UTF8
       $InstallContent = $InstallContent -replace '\{\{SCRIPT_PATH\}\}', $ScriptPathEsc
       $InstallContent = $InstallContent -replace '\{\{ICON_PATH\}\}', $IconPathEsc
-      $InstallContent = $InstallContent -replace '\{\{AUTO_ICON_PATH\}\}', $AutoIconPath
-      $InstallContent = $InstallContent -replace '\{\{WIDE_ICON_PATH\}\}', $WideIconPath
-      $InstallContent = $InstallContent -replace '\{\{PORT_ICON_PATH\}\}', $PortIconPath
-      $InstallContent = $InstallContent -replace '\{\{STACK_ICON_PATH\}\}', $StackIconPath
-      $InstallContent = $InstallContent -replace '\{\{CARO_ICON_PATH\}\}', $CaroIconPath
-      $InstallContent = $InstallContent -replace '\{\{TEST_ICON_PATH\}\}', $TestIconPath
       
-      # Write install registry file
+      # Replace all icon placeholders
+      foreach($Key in $IconPaths.Keys) {
+        $InstallContent = $InstallContent -replace "\{\{$Key\}\}", $IconPaths[$Key]
+      }
+      
       $InstallRegPath = Join-Path $InstallPath "Install_Context_Menu.reg"
       Set-Content -Path $InstallRegPath -Value $InstallContent -Encoding UTF8 -Force
     } else {
@@ -217,10 +259,7 @@ function New-RegistryFiles {
     }
     
     if(Test-Path $UninstallTemplate) {
-      # Read uninstall template (no replacements needed)
       $UninstallContent = Get-Content -Path $UninstallTemplate -Raw -Encoding UTF8
-      
-      # Write uninstall registry file
       $UninstallRegPath = Join-Path $InstallPath "Uninstall_Context_Menu.reg"
       Set-Content -Path $UninstallRegPath -Value $UninstallContent -Encoding UTF8 -Force
     } else {
@@ -238,22 +277,23 @@ function New-RegistryFiles {
 
 function Install-ToolAssets {
   try{
-    if(-not (Test-Path $InstallDir)){ New-Item -ItemType Directory -Path $InstallDir | Out-Null }
+    if(-not (Test-Path $script:Config.InstallDir)){ New-Item -ItemType Directory -Path $script:Config.InstallDir | Out-Null }
     $ScriptSrc = if($PSCommandPath){ $PSCommandPath } else { $MyInvocation.MyCommand.Path }
-    $ScriptDest = Join-Path $InstallDir "Doka-ScreenShotTool.ps1"
+    $ScriptDest = Join-Path $script:Config.InstallDir "$($script:Config.ToolName).ps1"
     Copy-Item -Path $ScriptSrc -Destination $ScriptDest -Force
-    # Try to copy main icon from assets directory
+    
     $ScriptRoot = Split-Path -Parent $ScriptSrc
     $AssetsPath = Join-Path $ScriptRoot "assets"
+    
+    # Copy main icon
     $IconSrc = Join-Path $AssetsPath "Doka.ico"
-    $IconDest = Join-Path $InstallDir "Doka.ico"
+    $IconDest = Join-Path $script:Config.InstallDir "Doka.ico"
     if(Test-Path $IconSrc){ Copy-Item -Path $IconSrc -Destination $IconDest -Force } else { $IconDest = $null }
     
     # Copy all option-specific icons
-    $OptionIcons = @("Auto.ico", "Wide.ico", "Port.ico", "Stack.ico", "Caro.ico", "Test.ico")
-    foreach($IconFile in $OptionIcons) {
+    foreach($IconFile in $script:Config.IconFiles) {
       $OptionIconSrc = Join-Path $AssetsPath $IconFile
-      $OptionIconDest = Join-Path $InstallDir $IconFile
+      $OptionIconDest = Join-Path $script:Config.InstallDir $IconFile
       if(Test-Path $OptionIconSrc) { 
         Copy-Item -Path $OptionIconSrc -Destination $OptionIconDest -Force 
         Write-Host "Copied $IconFile to install directory" -ForegroundColor DarkGray
@@ -261,64 +301,60 @@ function Install-ToolAssets {
         Write-Host "Warning: $IconFile not found in assets directory" -ForegroundColor Yellow
       }
     }
-    # Try to copy ASCII art file from assets directory
+    
+    # Copy ASCII art file
     $ArtDest = $null
     $ArtSrcCandidates = @(
-      (Join-Path (Join-Path $ScriptRoot "assets") "doka_ascii.txt"),
+      (Join-Path $AssetsPath "doka_ascii.txt"),
       (Join-Path $ScriptRoot "doka_ascii.txt")
     )
     $ArtSrc = $null
     foreach($Candidate in $ArtSrcCandidates){ if(-not $ArtSrc -and (Test-Path $Candidate)){ $ArtSrc = $Candidate } }
     if($ArtSrc){
       $ArtName = Split-Path -Leaf $ArtSrc
-      $ArtDest = Join-Path $InstallDir $ArtName
+      $ArtDest = Join-Path $script:Config.InstallDir $ArtName
       Copy-Item -Path $ArtSrc -Destination $ArtDest -Force
-    } else {
-      # Clean up old art files if none found
-      $OldArt = @(
-        (Join-Path $InstallDir "doka_ascii_3.txt"),
-        (Join-Path $InstallDir "doka_ascii.txt")
-      )
-      foreach($OldFile in $OldArt){ if(Test-Path $OldFile){ Remove-Item $OldFile -Force -ErrorAction SilentlyContinue } }
     }
-  # Ensure install dir is on PATH and provide a convenience shim
-  Add-ToUserPath $InstallDir
-  $CmdPath = Join-Path $InstallDir "scmontage.cmd"
-    # Write as separate lines to ensure proper CRLF without literal backticks; %ENV% expands in cmd at runtime
+    
+    # Setup PATH and convenience tools
+    Add-ToUserPath $script:Config.InstallDir
+    $CmdPath = Join-Path $script:Config.InstallDir "scmontage.cmd"
     $CmdLines = @(
       '@echo off',
-      'powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%LOCALAPPDATA%\Doka-ScreenShotTool\Doka-ScreenShotTool.ps1" %*'
+      "powershell.exe -NoProfile -ExecutionPolicy Bypass -File `"%LOCALAPPDATA%\$($script:Config.ToolName)\$($script:Config.ToolName).ps1`" %*"
     )
-  Set-Content -Path $CmdPath -Value $CmdLines -Encoding ASCII -Force
-  # Expose a user env var for direct invocation via $env:SCMONTAGE
-  [Environment]::SetEnvironmentVariable("SCMONTAGE", $ScriptDest, "User")
-  $env:SCMONTAGE = $ScriptDest
-  
-  # Generate registry files with current user's paths
-  $ScriptRoot = Split-Path -Parent $ScriptSrc
-  $RegFiles = New-RegistryFiles -InstallPath $InstallDir -IconPath $IconDest -ScriptRoot $ScriptRoot
-  
-  # Also copy registry files to script execution directory for easy access
-  if($RegFiles -and $RegFiles.InstallReg -and $RegFiles.UninstallReg) {
-    try {
-      $ScriptDirInstallReg = Join-Path $ScriptRoot "Install_Context_Menu.reg"
-      $ScriptDirUninstallReg = Join-Path $ScriptRoot "Uninstall_Context_Menu.reg"
-      Copy-Item -Path $RegFiles.InstallReg -Destination $ScriptDirInstallReg -Force
-      Copy-Item -Path $RegFiles.UninstallReg -Destination $ScriptDirUninstallReg -Force
-    } catch {
-      Write-Host "Warning: Could not copy registry files to script directory" -ForegroundColor Yellow
+    Set-Content -Path $CmdPath -Value $CmdLines -Encoding ASCII -Force
+    
+    [Environment]::SetEnvironmentVariable("SCMONTAGE", $ScriptDest, "User")
+    $env:SCMONTAGE = $ScriptDest
+    
+    # Generate registry files
+    $RegFiles = New-RegistryFiles -InstallPath $script:Config.InstallDir -IconPath $IconDest -ScriptRoot $ScriptRoot
+    
+    # Copy registry files to script directory
+    if($RegFiles -and $RegFiles.InstallReg -and $RegFiles.UninstallReg) {
+      try {
+        $ScriptDirInstallReg = Join-Path $ScriptRoot "Install_Context_Menu.reg"
+        $ScriptDirUninstallReg = Join-Path $ScriptRoot "Uninstall_Context_Menu.reg"
+        Copy-Item -Path $RegFiles.InstallReg -Destination $ScriptDirInstallReg -Force
+        Copy-Item -Path $RegFiles.UninstallReg -Destination $ScriptDirUninstallReg -Force
+      } catch {
+        Write-Host "Warning: Could not copy registry files to script directory" -ForegroundColor Yellow
+      }
     }
-  }
-  
-  return @{ ScriptPath=$ScriptDest; IconPath=$IconDest; Shim=$CmdPath; ArtPath=$ArtDest; RegFiles=$RegFiles }
+    
+    return @{ ScriptPath=$ScriptDest; IconPath=$IconDest; Shim=$CmdPath; ArtPath=$ArtDest; RegFiles=$RegFiles }
   } catch {
     Write-Host "Failed to install tool assets: $($_.Exception.Message)" -ForegroundColor Yellow
     return $null
   }
 }
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# IMAGE ANALYSIS & PROCESSING
+# ═══════════════════════════════════════════════════════════════════════════════
+
 function Get-ImageStats($images,$magick){
-  # Returns @{ Mean=<avg brightness>; AvgAR=<avg aspect ratio>; Counts=@{wide;standard;tall} }
   $totalB=0.0; $totalAR=0.0; $n=0; $wide=0; $std=0; $tall=0
   foreach($img in $images){
     try{
@@ -343,7 +379,7 @@ function Get-AutomaticSettings($images,$magick){
   $stats = Get-ImageStats $images $magick
   $avgB = $stats.Mean; $avgAR=$stats.AvgAR
   $wide=$stats.Counts.wide; $std=$stats.Counts.standard; $tall=$stats.Counts.tall
-  $useDark = $avgB -gt 0.5   # bright images -> dark background for contrast
+  $useDark = $avgB -gt 0.5
   $count = $images.Count
 
   $perfectSquares = @(1,4,9,16,25,36)
@@ -363,299 +399,293 @@ function Get-OptimalGrid([int]$count,[string]$orientation){
   $bestDiff=[math]::Abs(($bestCols/$bestRows) - $target)
   for($cols=1; $cols -le $count; $cols++){
     $rows=[math]::Ceiling($count/$cols)
-  $ratio=$cols/$rows
-  $diff=[math]::Abs($ratio - $target)
+    $ratio=$cols/$rows
+    $diff=[math]::Abs($ratio - $target)
     if($diff -lt $bestDiff){ $bestCols=$cols; $bestRows=$rows; $bestDiff=$diff }
   }
   @{ Columns=$bestCols; Rows=$bestRows }
 }
 
-function New-Montage([bool]$isPortrait,[bool]$isDark,[string]$inputFolder,[string]$magick,[string]$modeDescription=""){
-  $files = Get-Images $inputFolder
-  $imageCount = $files.Count
-  if($imageCount -le 0){ throw "No PNG files found in '$inputFolder'" }
-  $folderInfo = Get-Item $inputFolder
+# ═══════════════════════════════════════════════════════════════════════════════
+# UNIFIED MONTAGE CREATION ENGINE
+# ═══════════════════════════════════════════════════════════════════════════════
+
+function New-UnifiedMontage {
+  param(
+    [Parameter(Mandatory)]$Images,
+    [Parameter(Mandatory)][string]$MagickPath,
+    [Parameter(Mandatory)][string]$InputFolder,
+    [Parameter(Mandatory)][bool]$IsDark,
+    [string]$MontageType = "Grid",  # Grid, Stack, Carousel
+    [bool]$IsPortrait = $true,
+    [string]$ModeDescription = "",
+    [string]$OutputFileOverride = $null
+  )
+  
+  $folderInfo = Get-Item $InputFolder
   $folderName = $folderInfo.Name
   $outputFolder = $folderInfo.Parent.FullName
-
-  $orientation = if($isPortrait){'portrait'}else{'landscape'}
-  $orientationText = if($isPortrait){'Portrait'}else{'Wide'}
-  $themeText = if($isDark){'Dark'}else{'Light'}
-  $grid = Get-OptimalGrid -count $imageCount -orientation $orientation
-  $bg   = if($isDark){"#1e1e1e"}else{"#e6e6e6"}
+  $imageCount = $Images.Count
   
-  # DOKA Brand Colors for borders
-  $dokaYellow = "#ffdd00"
-  $dokaBlue = "#004588"
+  # Determine output file name
+  if($OutputFileOverride) {
+    $outFile = $OutputFileOverride
+  } else {
+    $modeText = if($IsDark){'Dark'}else{'Light'}
+    $suffix = if($ModeDescription -eq "Auto"){"_Auto"}else{""}
+    
+    switch($MontageType) {
+      "Grid" { 
+        $orientationText = if($IsPortrait){'Portrait'}else{'Wide'}
+        $outFile = "${orientationText}_${modeText}_${folderName}${suffix}.png"
+      }
+      "Stack" { $outFile = "Stack_${modeText}_${folderName}.png" }
+      "Carousel" { $outFile = "Carousel_${modeText}_${folderName}.png" }
+    }
+  }
   
-  $suffix = if($modeDescription -eq "Auto"){"_Auto"}else{""}
-  $outFile = "${orientationText}_${themeText}_${folderName}${suffix}.png"
   $outPath = Join-Path $outputFolder $outFile
-
-  Write-Host ("Creating {0} {1} montage ({2}x{3}) with DOKA branded borders..." -f $orientationText,$themeText,$grid.Columns,$grid.Rows) -ForegroundColor Cyan
-  $tile = "$($grid.Columns)x$($grid.Rows)"
+  
+  # Configure geometry and tile based on montage type
+  switch($MontageType) {
+    "Grid" {
+      $orientation = if($IsPortrait){'portrait'}else{'landscape'}
+      $grid = Get-OptimalGrid -count $imageCount -orientation $orientation
+      $tile = "$($grid.Columns)x$($grid.Rows)"
+      $geometry = "+$($script:Config.Border.Spacing)+$($script:Config.Border.Spacing)"
+      Write-Host ("Creating {0} {1} montage ({2}x{3}) with DOKA branded borders..." -f $(if($IsPortrait){'Portrait'}else{'Wide'}), $(if($IsDark){'Dark'}else{'Light'}), $grid.Columns, $grid.Rows) -ForegroundColor Cyan
+    }
+    "Stack" {
+      $maxHeight = 0
+      foreach($img in $Images){
+        try {
+          $info = & $MagickPath identify -format "%h" -- "$($img.FullName)" 2>$null
+          $h = [int]$info
+          if($h -gt $maxHeight){ $maxHeight = $h }
+        } catch {}
+      }
+      if($maxHeight -le 0){ $maxHeight = 100 }
+      $tile = "1x${imageCount}"
+      $geometry = "x${maxHeight}+$($script:Config.Border.Spacing)+$($script:Config.Border.Spacing)"
+      Write-Host ("Creating Stack (vertical, {0} mode) with DOKA branded borders..." -f $(if($IsDark){'Dark'}else{'Light'})) -ForegroundColor Cyan
+    }
+    "Carousel" {
+      $maxWidth = 0
+      foreach($img in $Images){
+        try {
+          $info = & $MagickPath identify -format "%w" -- "$($img.FullName)" 2>$null
+          $w = [int]$info
+          if($w -gt $maxWidth){ $maxWidth = $w }
+        } catch {}
+      }
+      if($maxWidth -le 0){ $maxWidth = 100 }
+      $tile = "${imageCount}x1"
+      $geometry = "${maxWidth}x+$($script:Config.Border.Spacing)+$($script:Config.Border.Spacing)"
+      Write-Host ("Creating Carousel (horizontal, {0} mode) with DOKA branded borders..." -f $(if($IsDark){'Dark'}else{'Light'})) -ForegroundColor Cyan
+    }
+  }
+  
+  # Build ImageMagick arguments with DOKA branded dual borders
   $imArgs = @('montage')
-  foreach($f in $files){ $imArgs += $f.FullName }
+  foreach($f in $Images){ $imArgs += $f.FullName }
   $imArgs += @(
-    '-tile', $tile, 
-    '-geometry', '+12+12', 
-    '-background', $bg, 
-    '-bordercolor', $dokaYellow, 
-    '-border', '3', 
-    '-bordercolor', $dokaBlue, 
-    '-border', '3', 
-    '-shadow', 
-    '-quality', '95', 
-    '-density', '150', 
+    '-tile', $tile,
+    '-geometry', $geometry,
+    '-background', $(if($IsDark){$script:Config.Colors.DarkBg}else{$script:Config.Colors.LightBg}),
+    '-bordercolor', $script:Config.Colors.DokaYellow,
+    '-border', $script:Config.Border.InnerWidth,
+    '-bordercolor', $script:Config.Colors.DokaBlue,
+    '-border', $script:Config.Border.OuterWidth,
+    '-shadow',
+    '-quality', '95',
+    '-density', '150',
     $outPath
   )
-  & $magick @imArgs
-  if($LASTEXITCODE -eq 0){ Write-Host "SUCCESS: $outFile" -ForegroundColor Green; return $true }
-  else { Write-Host "FAILED: $outFile (exit $LASTEXITCODE)" -ForegroundColor Red; return $false }
+  
+  & $MagickPath @imArgs
+  
+  $success = ($LASTEXITCODE -eq 0)
+  if($success){ 
+    Write-Host "SUCCESS: $outFile" -ForegroundColor Green 
+  } else { 
+    Write-Host "FAILED: $outFile (exit $LASTEXITCODE)" -ForegroundColor Red 
+  }
+  
+  return @{ Success = $success; FileName = $outFile }
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# MAIN EXECUTION LOGIC
+# ═══════════════════════════════════════════════════════════════════════════════
+
+function Invoke-Setup {
+  $magick = Initialize-ImageMagick -forceUpdate:$false
+  if($magick){
+    Write-Host "Setup completed successfully." -ForegroundColor Green
+    Write-Host "You can now use 'magick' from any terminal." -ForegroundColor Cyan
+    $assets = Install-ToolAssets
+    if($assets){
+      Write-Host ("Installed tool to: {0}" -f $script:Config.InstallDir) -ForegroundColor Green
+      if($assets.Shim -and (Test-Path $assets.Shim)){
+        Write-Host ("Run: scmontage -a <folder>") -ForegroundColor DarkGray
+      }
+      if($env:SCMONTAGE){
+        Write-Host ("User env var SCMONTAGE -> $env:SCMONTAGE") -ForegroundColor DarkGray
+      }
+      if($assets.RegFiles -and $assets.RegFiles.InstallReg){
+        Write-Host ("Registry files generated: Install_Context_Menu.reg & Uninstall_Context_Menu.reg") -ForegroundColor DarkGray
+      }
+      
+      # Prompt for context menu installation
+      if($assets.RegFiles -and $assets.RegFiles.InstallReg -and (Test-Path $assets.RegFiles.InstallReg)){
+        Write-Host ""
+        $contextMenuChoice = Read-Host "Install Windows Context Menu Integration? (Y/n)"
+        if($contextMenuChoice -eq "" -or $contextMenuChoice -match "^[Yy]") {
+          try {
+            Write-Host "Installing context menu integration..." -ForegroundColor Cyan
+            Start-Process -FilePath "regedit.exe" -ArgumentList "/s", "`"$($assets.RegFiles.InstallReg)`"" -Wait -Verb RunAs
+            Write-Host "Context menu integration installed successfully!" -ForegroundColor Green
+          } catch {
+            Write-Host "Failed to install context menu: $($_.Exception.Message)" -ForegroundColor Yellow
+            Write-Host "You can manually install it later by running: Install_Context_Menu.reg" -ForegroundColor Gray
+          }
+        } else {
+          Write-Host "Context menu installation skipped. You can install it later by running: Install_Context_Menu.reg" -ForegroundColor Gray
+        }
+      }
+    }
+    
+    # Show footer with ASCII art
+    $art = @()
+    if($assets.ArtPath -and (Test-Path $assets.ArtPath)){
+      $art = Get-Content -Path $assets.ArtPath -Encoding UTF8 | ForEach-Object { $_.Replace('-', ' ') }
+    }
+    $lines = @(
+      '  Tool successfully installed',
+      '  Made for Doka by ezellhof',
+      '  https://github.com/Ezellhof/DOKA-ScreenShotTool'
+    ) + $art
+    Show-Footer -success $true -Lines $lines -ContentForeground DarkBlue -ContentBackground Yellow -DrawSeparator $true
+    return $true
+  } else {
+    Write-Host "Setup failed." -ForegroundColor Red
+    Show-Footer -success $false -Lines @('  Install failed')
+    return $false
+  }
+}
+
+function Invoke-TestMode($images, $magick, $Folder) {
+  Write-Host "TEST MODE: creating all 8 combinations (portrait/landscape × dark/light + stack/carousel dark/light)..." -ForegroundColor Magenta
+  $ok = 0
+  
+  # Standard grid montages (4 combinations)
+  foreach($isPortrait in $true,$false){
+    foreach($isDark in $true,$false){
+      $result = New-UnifiedMontage -Images $images -MagickPath $magick -InputFolder $Folder -IsDark $isDark -MontageType "Grid" -IsPortrait $isPortrait -ModeDescription "Test"
+      if($result.Success){ $ok++ }
+    }
+  }
+  
+  # Stack montages (2 combinations)
+  foreach($isDark in $true,$false){
+    $result = New-UnifiedMontage -Images $images -MagickPath $magick -InputFolder $Folder -IsDark $isDark -MontageType "Stack"
+    if($result.Success){ $ok++ }
+  }
+  
+  # Carousel montages (2 combinations)
+  foreach($isDark in $true,$false){
+    $result = New-UnifiedMontage -Images $images -MagickPath $magick -InputFolder $Folder -IsDark $isDark -MontageType "Carousel"
+    if($result.Success){ $ok++ }
+  }
+  
+  Write-Host ("Test completed: {0}/8 successful" -f $ok) -ForegroundColor ($(if($ok -eq 8){'Green'}else{'Yellow'}))
+  Show-Footer ($ok -eq 8)
+  return ($ok -eq 8)
 }
 
 function Main {
-  # Setup mode: install/update ImageMagick and tool assets
+  # Setup mode
   if($setup){
-    $magick = Initialize-ImageMagick -forceUpdate:$false
-    if($magick){
-      Write-Host "Setup completed successfully." -ForegroundColor Green
-      Write-Host "You can now use 'magick' from any terminal." -ForegroundColor Cyan
-      $assets = Install-ToolAssets
-      if($assets){
-        Write-Host ("Installed tool to: {0}" -f $InstallDir) -ForegroundColor Green
-        if($assets.Shim -and (Test-Path $assets.Shim)){
-          Write-Host ("Run: scmontage -a <folder>") -ForegroundColor DarkGray
-        }
-        if($env:SCMONTAGE){
-          Write-Host ("User env var SCMONTAGE -> $env:SCMONTAGE") -ForegroundColor DarkGray
-        }
-        if($assets.RegFiles -and $assets.RegFiles.InstallReg){
-          Write-Host ("Registry files generated: Install_Context_Menu.reg & Uninstall_Context_Menu.reg") -ForegroundColor DarkGray
-        }
-        # Prompt for context menu installation
-        if($assets.RegFiles -and $assets.RegFiles.InstallReg -and (Test-Path $assets.RegFiles.InstallReg)){
-          Write-Host ""
-          $contextMenuChoice = Read-Host "Install Windows Context Menu Integration? (Y/n)"
-          if($contextMenuChoice -eq "" -or $contextMenuChoice -match "^[Yy]") {
-            try {
-              Write-Host "Installing context menu integration..." -ForegroundColor Cyan
-              Start-Process -FilePath "regedit.exe" -ArgumentList "/s", "`"$($assets.RegFiles.InstallReg)`"" -Wait -Verb RunAs
-              Write-Host "Context menu integration installed successfully!" -ForegroundColor Green
-            } catch {
-              Write-Host "Failed to install context menu: $($_.Exception.Message)" -ForegroundColor Yellow
-              Write-Host "You can manually install it later by running: Install_Context_Menu.reg" -ForegroundColor Gray
-            }
-          } else {
-            Write-Host "Context menu installation skipped. You can install it later by running: Install_Context_Menu.reg" -ForegroundColor Gray
-          }
-        }
-      }
-      $art = @()
-      if($assets.ArtPath -and (Test-Path $assets.ArtPath)){
-        $art = Get-Content -Path $assets.ArtPath -Encoding UTF8 | ForEach-Object { $_.Replace('-', ' ') }
-      }
-      $lines = @(
-        '  Tool successfully installed',
-        '  Made for Doka by ezellhof',
-        '  https://github.com/Ezellhof/DOKA-ScreenShotTool'
-      ) + $art
-      Show-Footer -success $true -Lines $lines -ContentForeground DarkBlue -ContentBackground Yellow -DrawSeparator $true
-      return
-    } else {
-      Write-Host "Setup failed." -ForegroundColor Red
-      Show-Footer -success $false -Lines @('  Install failed')
-      exit 1
-    }
+    $success = Invoke-Setup
+    exit $(if($success){0}else{1})
   }
 
-  # Default to automatic mode if no flags provided (like full script)
-  if(-not ($p -or $w -or $t -or $a -or $s -or $c)){ Write-Host "No mode specified - defaulting to automatic (-a)" -ForegroundColor Yellow; $a=$true }
+  # Default to automatic mode if no flags provided
+  if(-not ($p -or $w -or $t -or $a -or $s -or $c)){ 
+    Write-Host "No mode specified - defaulting to automatic (-a)" -ForegroundColor Yellow
+    $a=$true 
+  }
 
+  # Initialize ImageMagick
   $magick = Initialize-ImageMagick
-  if(-not $magick){ Write-Host "ImageMagick setup failed." -ForegroundColor Red; Show-Footer $false; exit 1 }
+  if(-not $magick){ 
+    Write-Host "ImageMagick setup failed." -ForegroundColor Red
+    Show-Footer $false
+    exit 1 
+  }
 
-  if(-not $Folder){ Write-Host "Provide a folder path." -ForegroundColor Red; Show-Footer $false; exit 1 }
-  if(-not (Test-Path $Folder -PathType Container)){ Write-Host "Folder not found: $Folder" -ForegroundColor Red; Show-Footer $false; exit 1 }
+  # Validate folder
+  if(-not $Folder){ 
+    Write-Host "Provide a folder path." -ForegroundColor Red
+    Show-Footer $false
+    exit 1 
+  }
+  if(-not (Test-Path $Folder -PathType Container)){ 
+    Write-Host "Folder not found: $Folder" -ForegroundColor Red
+    Show-Footer $false
+    exit 1 
+  }
 
+  # Get images
   $images = Get-Images $Folder
-  if(-not $images -or $images.Count -eq 0){ Write-Host "No PNGs found in: $Folder" -ForegroundColor Red; Show-Footer $false; exit 1 }
+  if(-not $images -or $images.Count -eq 0){ 
+    Write-Host "No PNGs found in: $Folder" -ForegroundColor Red
+    Show-Footer $false
+    exit 1 
+  }
   Write-Host ("Found {0} PNG files" -f $images.Count) -ForegroundColor Green
 
-  # Always use automatic brightness for light/dark mode.  Use a separate
-  # variable for the automatic settings to avoid shadowing the -s switch.
-  if($a -or $p -or $w){
-    $auto = Get-AutomaticSettings $images $magick
-    $isDark = $auto.UseDark
-    if($a){
-      $ok = New-Montage -isPortrait $auto.UsePortrait -isDark $isDark -inputFolder $Folder -magick $magick -modeDescription "Auto"
-      Show-Footer $ok; if(-not $ok){ exit 1 }; return
-    }
-    if($p){
-      $ok = New-Montage -isPortrait $true -isDark $isDark -inputFolder $Folder -magick $magick -modeDescription "Portrait"
-      Show-Footer $ok; if(-not $ok){ exit 1 }; return
-    }
-    if($w){
-      $ok = New-Montage -isPortrait $false -isDark $isDark -inputFolder $Folder -magick $magick -modeDescription "Wide"
-      Show-Footer $ok; if(-not $ok){ exit 1 }; return
-    }
+  # Process based on mode
+  if($t){
+    $success = Invoke-TestMode $images $magick $Folder
+    exit $(if($success){0}else{1})
   }
 
-  function New-StackMontage($images, $magick, $Folder, $isDark, $outFileOverride=$null) {
-    $imageCount = $images.Count
-    $folderInfo = Get-Item $Folder
-    $folderName = $folderInfo.Name
-    $modeText = if($isDark){ "Dark" } else { "Light" }
-    
-    $maxHeight = 0
-    foreach($img in $images){
-      try {
-        $info = & $magick identify -format "%h" -- "$($img.FullName)" 2>$null
-        $h = [int]$info
-        if($h -gt $maxHeight){ $maxHeight = $h }
-      } catch {}
-    }
-    if($maxHeight -le 0){ $maxHeight = 100 }
-    $geometry = "x${maxHeight}+12+12"
-    $tile = "1x${imageCount}"
-    $outputFolder = $folderInfo.Parent.FullName
-    $outFile = if($outFileOverride){ $outFileOverride } else { "Stack_${modeText}_${folderName}.png" }
-    $outPath = Join-Path $outputFolder $outFile
-    $bg  = if($isDark){ "#1e1e1e" } else { "#e6e6e6" }
-    
-    # DOKA Brand Colors for borders
-    $dokaYellow = "#ffdd00"
-    $dokaBlue = "#004588"
-    
-    $imArgs = @('montage')
-    foreach($f in $images){ $imArgs += $f.FullName }
-    $imArgs += @(
-      '-tile', $tile, 
-      '-geometry', $geometry, 
-      '-background', $bg, 
-      '-bordercolor', $dokaYellow, 
-      '-border', '3', 
-      '-bordercolor', $dokaBlue, 
-      '-border', '3', 
-      '-shadow', 
-      '-quality', '95', 
-      '-density', '150', 
-      $outPath
-    )
-    & $magick @imArgs
-    
-    # Return both success status and filename
-    return @{ Success = ($LASTEXITCODE -eq 0); FileName = $outFile }
+  # For all other modes, get automatic theme settings
+  $auto = Get-AutomaticSettings $images $magick
+  $isDark = $auto.UseDark
+
+  # Execute the appropriate montage type
+  $result = $null
+  if($a){
+    $result = New-UnifiedMontage -Images $images -MagickPath $magick -InputFolder $Folder -IsDark $isDark -MontageType "Grid" -IsPortrait $auto.UsePortrait -ModeDescription "Auto"
+  } elseif($p){
+    $result = New-UnifiedMontage -Images $images -MagickPath $magick -InputFolder $Folder -IsDark $isDark -MontageType "Grid" -IsPortrait $true -ModeDescription "Portrait"
+  } elseif($w){
+    $result = New-UnifiedMontage -Images $images -MagickPath $magick -InputFolder $Folder -IsDark $isDark -MontageType "Grid" -IsPortrait $false -ModeDescription "Wide"
+  } elseif($s){
+    $result = New-UnifiedMontage -Images $images -MagickPath $magick -InputFolder $Folder -IsDark $isDark -MontageType "Stack"
+  } elseif($c){
+    $result = New-UnifiedMontage -Images $images -MagickPath $magick -InputFolder $Folder -IsDark $isDark -MontageType "Carousel"
+  }
+
+  if($result) {
+    Show-Footer $result.Success
+    exit $(if($result.Success){0}else{1})
+  } else {
+    Show-Footer $false
+    exit 1
+  }
 }
 
-function New-CarouselMontage($images, $magick, $Folder, $isDark, $outFileOverride=$null) {
-    $imageCount = $images.Count
-    $folderInfo = Get-Item $Folder
-    $folderName = $folderInfo.Name
-    $modeText = if($isDark){ "Dark" } else { "Light" }
-    
-    $maxWidth = 0
-    foreach($img in $images){
-      try {
-        $info = & $magick identify -format "%w" -- "$($img.FullName)" 2>$null
-        $w = [int]$info
-        if($w -gt $maxWidth){ $maxWidth = $w }
-      } catch {}
-    }
-    if($maxWidth -le 0){ $maxWidth = 100 }
-    $geometry = "${maxWidth}x+12+12"
-    $tile = "${imageCount}x1"
-    $outputFolder = $folderInfo.Parent.FullName
-    $outFile = if($outFileOverride){ $outFileOverride } else { "Carousel_${modeText}_${folderName}.png" }
-    $outPath = Join-Path $outputFolder $outFile
-    $bg  = if($isDark){ "#1e1e1e" } else { "#e6e6e6" }
-    
-    # DOKA Brand Colors for borders
-    $dokaYellow = "#ffdd00"
-    $dokaBlue = "#004588"
-    
-    $imArgs = @('montage')
-    foreach($f in $images){ $imArgs += $f.FullName }
-    $imArgs += @(
-      '-tile', $tile, 
-      '-geometry', $geometry, 
-      '-background', $bg, 
-      '-bordercolor', $dokaYellow, 
-      '-border', '3', 
-      '-bordercolor', $dokaBlue, 
-      '-border', '3', 
-      '-shadow', 
-      '-quality', '95', 
-      '-density', '150', 
-      $outPath
-    )
-    & $magick @imArgs
-    
-    # Return both success status and filename
-    return @{ Success = ($LASTEXITCODE -eq 0); FileName = $outFile }
-}
+# ═══════════════════════════════════════════════════════════════════════════════
+# ENTRY POINT
+# ═══════════════════════════════════════════════════════════════════════════════
 
-  if($t){
-    Write-Host "TEST MODE: creating all 8 combinations (portrait/landscape × dark/light + stack/carousel dark/light)..." -ForegroundColor Magenta
-    $ok = 0
-    $folderInfo = Get-Item $Folder
-    $folderName = $folderInfo.Name
-    # First run the 4 standard montages (portrait vs landscape and dark vs light)
-    foreach($pr in $true,$false){
-      foreach($dark in $true,$false){
-        if(New-Montage $pr $dark $Folder $magick "Test"){ $ok++ }
-      }
-    }
-    # Stack (vertical, super high) for dark and light backgrounds
-    foreach($dark in $true,$false){
-      $modeText = if($dark){'Dark'}else{'Light'}
-      $outFile = "Stack_${modeText}_${folderName}.png"
-      Write-Host ("Creating Stack (vertical, ${modeText} mode)...") -ForegroundColor Cyan
-      $okStack = New-StackMontage $images $magick $Folder $dark $outFile
-      if($okStack){ Write-Host "SUCCESS: $outFile" -ForegroundColor Green; $ok++ } else { Write-Host "FAILED: $outFile" -ForegroundColor Red }
-    }
-    # Carousel (horizontal, super wide) for dark and light backgrounds
-    foreach($dark in $true,$false){
-      $modeText = if($dark){'Dark'}else{'Light'}
-      $outFile = "Carousel_${modeText}_${folderName}.png"
-      Write-Host ("Creating Carousel (horizontal, ${modeText} mode)...") -ForegroundColor Cyan
-      $okCar = New-CarouselMontage $images $magick $Folder $dark $outFile
-      if($okCar){ Write-Host "SUCCESS: $outFile" -ForegroundColor Green; $ok++ } else { Write-Host "FAILED: $outFile" -ForegroundColor Red }
-    }
-    Write-Host ("Test completed: {0}/8 successful" -f $ok) -ForegroundColor ($(if($ok -eq 8){'Green'}else{'Yellow'}))
-    Show-Footer ($ok -eq 8); return
+try { 
+  Main 
+} catch { 
+  Write-Host $_.Exception.Message -ForegroundColor Red
+  Show-Footer $false
+  exit 1 
 }
-
-  # When the -s switch is supplied, assemble all PNGs in a single vertical column (Stack)
- if($s){
-    $auto = Get-AutomaticSettings $images $magick
-    $isDark = $auto.UseDark
-    $modeText = if($isDark){'Dark'}else{'Light'}
-    
-    Write-Host ("Creating Stack (vertical, ${modeText} mode)...") -ForegroundColor Cyan
-    $result = New-StackMontage $images $magick $Folder $isDark
-    if($result.Success){ 
-        Write-Host "SUCCESS: $($result.FileName)" -ForegroundColor Green 
-    } else { 
-        Write-Host "FAILED: $($result.FileName)" -ForegroundColor Red 
-    }
-    Show-Footer $result.Success; if(-not $result.Success){ exit 1 }; return
-}
-
-if($c){
-    $auto = Get-AutomaticSettings $images $magick
-    $isDark = $auto.UseDark
-    $modeText = if($isDark){'Dark'}else{'Light'}
-    
-    Write-Host ("Creating Carousel (horizontal, ${modeText} mode)...") -ForegroundColor Cyan
-    $result = New-CarouselMontage $images $magick $Folder $isDark
-    if($result.Success){ 
-        Write-Host "SUCCESS: $($result.FileName)" -ForegroundColor Green 
-    } else { 
-        Write-Host "FAILED: $($result.FileName)" -ForegroundColor Red 
-    }
-    Show-Footer $result.Success; if(-not $result.Success){ exit 1 }; return
-}
-}
-
-try { Main } catch { Write-Host $_.Exception.Message -ForegroundColor Red; Show-Footer $false; exit 1 }
