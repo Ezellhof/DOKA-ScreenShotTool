@@ -70,12 +70,12 @@ function Show-Footer {
   $content = if ($Lines -and $Lines.Count -gt 0) { $Lines } else { @($defaultMsg) }
   
   $inner = ($content + $title | ForEach-Object { $_.Length } | Measure-Object -Maximum).Maximum + 2
-  $top = '╔' + ('═' * $inner) + '╗'
-  $bottom = '╚' + ('═' * $inner) + '╝'
+  $top = '+' + ('-' * $inner) + '+'
+  $bottom = '+' + ('-' * $inner) + '+'
   
   Write-Host ""
   Write-Host $top -ForegroundColor Cyan
-  Write-Host ('║' + (' ' + $title).PadRight($inner) + '║') -ForegroundColor Blue
+  Write-Host ('|' + (' ' + $title).PadRight($inner) + '|') -ForegroundColor Blue
   
   $separatorDrawn = $false
   foreach($c in $content){
@@ -83,7 +83,7 @@ function Show-Footer {
     
     if(($c -match '@' -or $c -match '^\.*[@.]') -and $ContentBackground){
       if($DrawSeparator -and -not $separatorDrawn) {
-        $separator = '╠' + ('═' * $inner) + '╣'
+        $separator = '+' + ('-' * $inner) + '+'
         Write-Host $separator -ForegroundColor Cyan
         $separatorDrawn = $true
       }
@@ -94,13 +94,13 @@ function Show-Footer {
       $leftPad = ' ' * [math]::Floor($padding / 2)
       $rightPad = ' ' * ($padding - $leftPad.Length)
       
-      Write-Host '║' -NoNewline -ForegroundColor Cyan
+      Write-Host '|' -NoNewline -ForegroundColor Cyan
       Write-Host $leftPad -NoNewline
       Write-Host $artLine -NoNewline -ForegroundColor $ContentForeground -BackgroundColor $ContentBackground
       Write-Host $rightPad -NoNewline
-      Write-Host '║' -ForegroundColor Cyan
+      Write-Host '|' -ForegroundColor Cyan
     } else {
-      $line = '║' + $textCentered + '║'
+      $line = '|' + $textCentered + '|'
       if ($ContentForeground) {
         Write-Host $line -ForegroundColor $ContentForeground
       } elseif ($success) {
@@ -280,7 +280,10 @@ function Install-ToolAssets {
     if(-not (Test-Path $script:Config.InstallDir)){ New-Item -ItemType Directory -Path $script:Config.InstallDir | Out-Null }
     $ScriptSrc = if($PSCommandPath){ $PSCommandPath } else { $MyInvocation.MyCommand.Path }
     $ScriptDest = Join-Path $script:Config.InstallDir "$($script:Config.ToolName).ps1"
-    Copy-Item -Path $ScriptSrc -Destination $ScriptDest -Force
+    
+    # Copy script with proper UTF8 encoding to preserve Unicode characters
+    $ScriptContent = Get-Content -Path $ScriptSrc -Raw -Encoding UTF8
+    Set-Content -Path $ScriptDest -Value $ScriptContent -Encoding UTF8 -Force
     
     $ScriptRoot = Split-Path -Parent $ScriptSrc
     $AssetsPath = Join-Path $ScriptRoot "assets"
