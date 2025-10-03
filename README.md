@@ -19,7 +19,7 @@
 - 📐 **Optimal Layouts** - Auto Portrait/Widescreen based on quantity & dimensions
 - ⚡ **Perfect Grids** - Calculates best column/row arrangements
 - 👯‍♀️ **Clean Output** - High-Quality Screenshot-Montages with colored Borders and high Resolution **[See Video](#clean-output--zoom)**
-- 🎯 **Portable & Self-Contained** - No system-wide installs, everything in user space
+- 🥡 **Portable & Self-Contained** - No system-wide installs, everything in user space
 - 🔧 **Smart Asset Management** - Auto-downloads latest ImageMagick with version detection
 - 📋 **Dynamic Registry Files** - Generates personalized Windows context menu files during setup
 
