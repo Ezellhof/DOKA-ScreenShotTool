@@ -75,8 +75,6 @@ scmontage -a .\screenshot-folder\
 | `-w` | 🖥️ **Widescreen** - Horizontal layout | `-w -l .\screenshot-folder\` |
 | `-s` | 🏢 **Stack Mode** - Stacks all PNGs vertically in a single column | `-s .\screenshot-folder\` |
 | `-c` | 🖼️ **Carousel Mode** - Arranges all PNGs horizontally in a single row | `-c .\screenshot-folder\` |
-| `-d` | 🌙 **Dark Theme** - Dark background & pink borders | `-p -d .\screenshot-folder\` |
-| `-l` | ☀️ **Light Theme** - Light background & purple borders | `-w -l .\screenshot-folder\` |
 
 ## 🎯 Setup Features
 
