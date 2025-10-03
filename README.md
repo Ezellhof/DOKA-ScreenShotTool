@@ -10,7 +10,7 @@
 
 - 🎉 **No Windows Admin User needed** - Just execute as plain old **USER**
 - 💎 **Automated Setup & Installation** - Complete one-command setup with optional context menu integration
-- 💎 **Windows Context Menu Integration** (Optional) - Use the Script via Right Click on Folder **[See Video](#windows-context-menu)**
+- 🪟 **Windows Context Menu Integration** (Optional) - Use the Script via Right Click on Folder **[See Video](#windows-context-menu)**
 - 🔩 **Parallel Execution** - Make Countless Montages at the same time in Seconds **[See Video](#parallel-execution)**
 - ⚙️ **Zero-Config Installation** - Auto Downloads & installs portable ImageMagick to LocalAppData
 - 📸 **Unlimited Folders** - Process any number of PNG files in any Number of Folders
