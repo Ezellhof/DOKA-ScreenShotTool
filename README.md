@@ -36,7 +36,7 @@
 
 # 🚀 Quick Start
 
-## 🎯 One-Command Setup (Recommended)
+## 💎 One-Command Setup (Recommended)
 
 ```powershell
 # Complete setup with optional context menu integration
@@ -49,7 +49,7 @@
 # ✅ Ask if you want Windows context menu integration (Y/n)
 ```
 
-## 💎 Usage with Windows Context Menu Integration:
+## 🪟 Usage with Windows Context Menu Integration:
 
 - **Select as many Folders as you want**
 - **Rightclick**
