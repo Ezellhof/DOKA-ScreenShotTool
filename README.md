@@ -29,12 +29,13 @@
 - **📐 Dimension Detection** - Analyzes aspect ratios and image sizes
 - **📊 Smart Decisions** - Analysis-based decisions for which Grid to use
 
-## 🔞 Disclaimer 
-- I am **not responsible** for **deleted Screenshots, still open Helpdesk-Tickets, thermonuclear war 💣**, or you getting **fired** because your alarm app failed. **Please read the [📋Script](Doka-ScreenShotTool.ps1) before Execution!**
 
 -----
 
 # 🚀 Quick Start
+
+## 🔞 Disclaimer 
+- I am **not responsible** for **deleted Screenshots, still open Helpdesk-Tickets, thermonuclear war 💣**, or you getting **fired** because your alarm app failed. **Please read the [📋Script](Doka-ScreenShotTool.ps1) before Execution!**
 
 ## 💎 One-Command Setup (Recommended)
 
