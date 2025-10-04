@@ -6,6 +6,9 @@
 [![ImageMagick](https://img.shields.io/badge/Powered%20by-ImageMagick-orange?style=for-the-badge)](https://imagemagick.org/)
 </div>
 
+## 🔞 Disclaimer 
+- I am **not responsible** for **deleted Screenshots, still open Helpdesk-Tickets, thermonuclear war 💣**, or you getting **fired** because your alarm app failed. **Please read the [📋Script](Doka-ScreenShotTool.ps1) before Execution!**
+
 ## ✨ Features
 
 - 🎉 **No Windows Admin User needed** - Just execute as plain old **USER**
@@ -29,10 +32,9 @@
 - **📐 Dimension Detection** - Analyzes aspect ratios and image sizes
 - **📊 Smart Decisions** - Analysis-based decisions for which Grid to use
 
-# 🚀 Quick Start
+---
 
-## 🔞 Disclaimer 
-- I am **not responsible** for **deleted Screenshots, still open Helpdesk-Tickets, thermonuclear war 💣**, or you getting **fired** because your alarm app failed. **Please read the [📋Script](Doka-ScreenShotTool.ps1) before Execution!**
+# 🚀 Quick Start
 
 ## 💎 One-Command Setup (Recommended)
 
