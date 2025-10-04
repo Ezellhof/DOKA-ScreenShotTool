@@ -1,4 +1,4 @@
-# <img src="assets/doka_branding_github/Doka_Logo_Square_RGB.svg" alt="Logo" style="height: 1.0em; vertical-align: middle;"> Doka Screenshot Tool
+# <img src="assets/doka_branding_github/Doka_Logo_Square_RGB.svg" alt="Logo" style="height: 1.0em; vertical-align: middle;"> <img src="assets/doka_branding_github/AtPac_Logo_Square_RGB.svg" alt="Logo" style="height: 1.0em; vertical-align: middle;"> <img src="assets/doka_branding_github/UG_Logo_Square_RGB_Lime_Blue.svg" alt="Logo" style="height: 1.0em; vertical-align: middle;"> Doka Screenshot Tool
 
 ![Platform](https://img.shields.io/badge/Platform-Windows-success?style=for-the-badge&logo=windows)
 ![License](https://img.shields.io/badge/License-Free-brightgreen?style=for-the-badge)
