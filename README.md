@@ -29,9 +29,6 @@
 - **📐 Dimension Detection** - Analyzes aspect ratios and image sizes
 - **📊 Smart Decisions** - Analysis-based decisions for which Grid to use
 
-
------
-
 # 🚀 Quick Start
 
 ## 🔞 Disclaimer 
