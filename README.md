@@ -91,40 +91,19 @@ scmontage -a .\screenshot-folder\
 - `Widescreen_Dark_ScreenshotFolderName.png`
 - `Widescreen_Light_ScreenshotFolderName.png`
 
-## 🔧 Installation Details
-
-After running `-setup`, the following files are created:
-
-**📍 In `%LOCALAPPDATA%\Doka-ScreenShotTool\`:**
-- `Doka-ScreenShotTool.ps1` - Main script
-- `scmontage.cmd` - Global command shim
-- `Doka.ico` - Context menu icon
-- `doka_ascii.txt` - ASCII art for branding
-- `Install_Context_Menu.reg` - Context menu installer
-- `Uninstall_Context_Menu.reg` - Context menu remover
-
-**📍 In script directory:**
-- `Install_Context_Menu.reg` - Copy for easy access
-- `Uninstall_Context_Menu.reg` - Copy for easy access
-
-**🌐 Environment:**
-- `scmontage` command available globally
-- `SCMONTAGE` environment variable set
-- User PATH updated with tool directory
-
 -----
 -----
 
 # 💡Guides & Help
 
-## 💎 Windows Context Menu:
+## 🪟 Windows Context Menu:
 
 <a href="/assets/video/doc_context.mp4">
   <img src="/assets/video/thumbnails/context_thumb.jpg" alt="Play Video" width="720">
 </a>
 
 
-**🆕 Automated Installation:**
+** 💎 Automated Installation:**
 - Run `.\Doka-ScreenShotTool.ps1 -setup`
 - When prompted "Install Windows Context Menu Integration? (Y/n)", press Enter or type Y
 - UAC prompt will appear - Enter Password for your User
