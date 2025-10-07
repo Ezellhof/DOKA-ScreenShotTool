@@ -16,7 +16,7 @@
 - 🪟 **Windows Context Menu Integration** (Optional) - Use the Script via Right Click on Folder **[See Video](#windows-context-menu)**
 - 🔩 **Parallel Execution** - Make Countless Montages at the same time in Seconds **[See Video](#parallel-execution)**
 - ⚙️ **Zero-Config Installation** - Auto Downloads & installs portable ImageMagick to LocalAppData
-- 📸 **Unlimited Folders** - Process any number of PNG files in any Number of Folders
+- 📸 **Unlimited Folders and Formats** - Process any number and format of Image-Files in any Number of Folders
 - 🤖 **Smart Auto-Detection** - Automatically analyzes your images
 - 🎨 **Intelligent Theming** - Auto Dark/Light mode Background based on average brightness
 - 📐 **Optimal Layouts** - Auto Portrait/Widescreen based on quantity & dimensions
