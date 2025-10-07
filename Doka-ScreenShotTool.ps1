@@ -125,7 +125,26 @@ function Add-ToUserPath([string]$Path){
   } catch {}
 }
 
-function Get-Images($Directory){ Get-ChildItem -Path $Directory -Filter *.png -File }
+function Get-Images($Directory){ 
+  # Common image extensions supported by ImageMagick
+  $imageExtensions = @(
+    '*.png', '*.jpg', '*.jpeg', '*.gif', '*.bmp', '*.tiff', '*.tif', 
+    '*.webp', '*.ico', '*.svg', '*.psd', '*.xcf', '*.raw', '*.cr2', 
+    '*.nef', '*.arw', '*.dng', '*.orf', '*.rw2', '*.pef', '*.sr2',
+    '*.heic', '*.heif', '*.avif', '*.jxl', '*.jp2', '*.j2k', '*.jpx',
+    '*.pcx', '*.tga', '*.exr', '*.hdr', '*.pbm', '*.pgm', '*.ppm',
+    '*.xbm', '*.xpm', '*.cut', '*.emf', '*.wmf', '*.fig', '*.jng',
+    '*.mng', '*.wbmp', '*.fits', '*.fts', '*.sgi', '*.sun', '*.ras'
+  )
+  
+  $allImages = @()
+  foreach($ext in $imageExtensions) {
+    $found = Get-ChildItem -Path $Directory -Filter $ext -File -ErrorAction SilentlyContinue
+    if($found) { $allImages += $found }
+  }
+  
+  return $allImages | Sort-Object Name
+}
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # IMAGEMAGICK MANAGEMENT
