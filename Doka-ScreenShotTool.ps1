@@ -125,7 +125,7 @@ function Add-ToUserPath([string]$Path){
   } catch {}
 }
 
-function Get-Images($Directory){ 
+function Get-Images($Directory){
   # Common image extensions supported by ImageMagick
   $imageExtensions = @(
     '*.png', '*.jpg', '*.jpeg', '*.gif', '*.bmp', '*.tiff', '*.tif', 
