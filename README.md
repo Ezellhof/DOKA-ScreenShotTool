@@ -6,7 +6,7 @@
 </div>
 
 ## 🔞 Disclaimer 
-- I am **not responsible** for **deleted Screenshots ❌, still open Helpdesk-Tickets <img src="assets/doka_branding_github/Combined_Hot_Tickets.svg" alt="Tickets" style="height: 1.0em; vertical-align: middle;">, Thermonuclear War 💣**, or you getting **fired because your ⏰ Alarm App failed**. **Please read the [📋Script](Doka-ScreenShotTool.ps1) before Execution!**
+- I am **not responsible** for **deleted Screenshots** ❌, **still open Helpdesk-Tickets** <img src="assets/doka_branding_github/Combined_Hot_Tickets.svg" alt="Tickets" style="height: 1.0em; vertical-align: middle;">, **Thermonuclear-War 💣**, or you getting **fired because your ⏰ Alarm App failed**. **Please read the [📋Script](Doka-ScreenShotTool.ps1) before Execution!**
 
 ## ✨ Features
 
