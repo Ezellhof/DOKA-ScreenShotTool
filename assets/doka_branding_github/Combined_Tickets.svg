@@ -1,0 +1,109 @@
+<svg viewBox="0 0 430 430" xmlns="http://www.w3.org/2000/svg">
+  <!-- RED TICKET (Top Left) -->
+  <g transform="translate(5,5)">
+    <rect width="200" height="200" rx="20" fill="#d32727"/>
+    <g transform="translate(75,100)">
+      <circle r="23" fill="#fff"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(45)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(90)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(135)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(180)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(225)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(270)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(315)"/>
+      <circle r="10" fill="#d32727"/>
+    </g>
+    <g transform="translate(125,78)">
+      <circle r="16" fill="#ccc"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(60)"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(120)"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(180)"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(240)"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(300)"/>
+      <circle r="6" fill="#d32727"/>
+    </g>
+  </g>
+
+  <!-- BLUE TICKET (Top Right) -->
+  <g transform="translate(225,5)">
+    <rect width="200" height="200" rx="20" fill="#5d98d2"/>
+    <g transform="translate(75,100)">
+      <circle r="23" fill="#fff"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(45)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(90)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(135)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(180)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(225)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(270)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(315)"/>
+      <circle r="10" fill="#5d98d2"/>
+    </g>
+    <g transform="translate(125,78)">
+      <circle r="16" fill="#ccc"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(60)"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(120)"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(180)"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(240)"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(300)"/>
+      <circle r="6" fill="#5d98d2"/>
+    </g>
+  </g>
+
+  <!-- GREEN TICKET (Bottom Left) -->
+  <g transform="translate(5,225)">
+    <rect width="200" height="200" rx="20" fill="#a1bd62"/>
+    <g transform="translate(75,100)">
+      <circle r="23" fill="#fff"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(45)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(90)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(135)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(180)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(225)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(270)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(315)"/>
+      <circle r="10" fill="#a1bd62"/>
+    </g>
+    <g transform="translate(125,78)">
+      <circle r="16" fill="#ccc"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(60)"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(120)"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(180)"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(240)"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(300)"/>
+      <circle r="6" fill="#a1bd62"/>
+    </g>
+  </g>
+
+  <!-- YELLOW TICKET (Bottom Right) -->
+  <g transform="translate(225,225)">
+    <rect width="200" height="200" rx="20" fill="#eab03d"/>
+    <g transform="translate(75,100)">
+      <circle r="23" fill="#fff"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(45)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(90)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(135)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(180)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(225)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(270)"/>
+      <path d="M-8,-15 L-5,-30 Q-5,-33 0,-33 Q5,-33 5,-30 L8,-15 Z" fill="#fff" transform="rotate(315)"/>
+      <circle r="10" fill="#eab03d"/>
+    </g>
+    <g transform="translate(125,78)">
+      <circle r="16" fill="#ccc"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(60)"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(120)"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(180)"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(240)"/>
+      <path d="M-6,-12 L-4,-20 Q-4,-23 0,-23 Q4,-23 4,-20 L6,-12 Z" fill="#ccc" transform="rotate(300)"/>
+      <circle r="6" fill="#eab03d"/>
+    </g>
+  </g>
+</svg>
